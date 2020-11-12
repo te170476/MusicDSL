@@ -36,70 +36,6 @@ class DocumentUrlParameterListener{
     }
 }
 
-class SessionController {
-    static get url(){ return new URL("https://script.google.com/macros/s/AKfycbxE1H5XIwMf8YL25ail4TBgfp-uu77VDJSVE7aahS_KEtsepMo/exec"); }
-    constructor(){
-        this.id = new DocumentUrlParameterListener("sessionId");
-        this.isAlive  = false;
-        this.syncPageFunc = null;
-    }
-    toggle(id){
-        this.isAlive = !this.isAlive;
-        if(this.isAlive){
-            if(!this.id.value){
-                SessionController.promisedId().then(it=>{
-                    this.id.value = it;
-                    this.hostingSession();
-                });
-            }else{
-                this.joinToSession();
-            }
-        }else{
-            console.log("connection closed.");
-            this.id.clean();
-            page.removeOnSet(this.syncPageFunc);
-        }
-    }
-    static promisedId() {
-        return fetch(SessionController.url)
-                .then(response  => response.json())
-                .then(json      => json.id);
-    }
-    hostingSession(){
-        console.log("start Hosting...");
-        console.log("id: "+ this.id.value);
-        const url = SessionController.url;
-        url.searchParams.set("action", "set");
-        url.searchParams.set("id"    , this.id.value);
-        this.syncPageFunc = page=> this.setPage(url, page)
-        page.addOnSet(this.syncPageFunc);
-    }
-    setPage(url, value){
-        url.searchParams.set("page", value);
-        fetch(url);
-    }
-    joinToSession(){
-        const url = SessionController.url;
-        console.log("join to session.");
-        console.log("id: "+ this.id.value);
-        url.searchParams.set("action", "get");
-        url.searchParams.set("id"    , this.id.value);
-        this.pageSyncing();
-    }
-    pageSyncing(){
-        if(!this.isAlive) return;
-        console.log(".");
-        const url = SessionController.url;
-        url.searchParams.set("id", this.id.value);
-        fetch(url)
-            .then(response  => response.json())
-            .then(json=>{
-                page.value = json.page;
-                setTimeout(()=> this.pageSyncing(), 100);
-            });
-    }
-}
-
 class Increment {
     constructor(element){
         this.element = element;
@@ -215,9 +151,4 @@ window.onload = function(){
             case keyAllowRight: slideshow.increment(); break;
         }
     };
-
-    const sessionController = new SessionController();
-    if(!!sessionController.id.value)
-        sessionController.toggle();
-    // inputs.filter(it=> it.name == "sessionToggler")[0].onclick = ()=> sessionController.toggle();
 }
