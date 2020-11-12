@@ -115,26 +115,21 @@ class Page {
             = new DocumentUrlParameterListener(
                 "inc"
             ,it=> {
-                if(it == null) return 1;
+                if(it == null) return 0;
                 return Number(it);
             },it=> {
                 return it < 0
                     || it >= this.increments.length + 1;
             });
         counter.addOnSet( (current, before)=>{
-            // this.increments[before].element.style.visibility = "hidden";
             if(before > current)
                 this.increments[before - 1].element.style.visibility = "hidden";
             if(current != 0)
                 this.increments[current - 1].element.style.visibility = "visible";
         });
-        counter.reload();
         this.counter = counter;
-        this.increments
-            .forEach(it=> {
-                it.element.style.visibility = "hidden"
-                console.log(it.element.style.visibility)
-            });
+        this.hidden();
+        counter.reload();
         console.log(this.increments);
     }
     increment() {
@@ -149,9 +144,7 @@ class Page {
     }
     hidden() {
         this.increments
-            .forEach(it=> {
-                it.element.style.visibility = "hidden"
-            });
+            .forEach(it=> it.element.style.visibility = "hidden");
         this.counter.value = 0;
     }
     visible() {
@@ -171,7 +164,7 @@ class Slideshow {
             = new DocumentUrlParameterListener(
                 "page"
             ,it=> {
-                if(it == null) return 1;
+                if(it == null) return 0;
                 return Number(it);
             },it=> {
                 return it < 0
@@ -206,39 +199,25 @@ class Slideshow {
 }
 window.onload = function(){
     const slideshow = new Slideshow(document.getElementsByClassName('slideshow')[0]);
-    const inputs
-        = Array.from(slideshow.element.children)
-            .filter(it=> it.tagName == "INPUT");
-    flipInputs = inputs.filter(it=> it.name == "flip");
-    const inputInvalidationCheckbox = inputs[0];
-    const listViewButton            = flipInputs[0];
-
-    // flipInputs.forEach((it, index)=> it.onchange = value=> { if(value) page.value = index; });
-    // page.addOnSet( it=> flipInputs[it].checked = true );
-    // page.reload();
-    
-    // if(!isMobile())
-    //     inputInvalidationCheckbox.checked = true;
+    slideshow.element.addEventListener("click", e=>{
+        const clientWidth = slideshow.element.clientWidth
+        const border = clientWidth * 0.1;
+        const x = e.offsetX;
+        if(border > x)
+            slideshow.decrement();
+        if(border > clientWidth - x)
+            slideshow.increment();
+    });
 
     document.onkeydown = function(event){
         switch(event.keyCode){
             case keyAllowLeft : slideshow.decrement(); break;
             case keyAllowRight: slideshow.increment(); break;
-            // case keyAllowLeft : slideshowDecrement(); break;
-            // case keyAllowRight: slideshowIncrement(); break;
         }
     };
 
     const sessionController = new SessionController();
     if(!!sessionController.id.value)
         sessionController.toggle();
-    inputs.filter(it=> it.name == "sessionToggler")[0].onclick = ()=> sessionController.toggle();
+    // inputs.filter(it=> it.name == "sessionToggler")[0].onclick = ()=> sessionController.toggle();
 }
-
-// TODO: in page fli@
-function slideshowDecrement(){ page.value = page.value -1; }
-function slideshowIncrement(){ page.value = page.value +1; }
-function isMobile(){
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
