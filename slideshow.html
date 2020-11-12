@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Slideshow</title>
+    <link rel="stylesheet" href="slideshow.css">
+    <link rel="stylesheet" href="slideshow-styling.css">
+    <script src="slideshow.js"></script>
+</head>
+<body>
+<form class="slideshow">
+    <input type="checkbox" name="listview">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="radio" name="flip">
+    <!-- <input type="radio" name="flip" checked> -->
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="radio" name="flip">
+    <input type="button" name="sessionToggler">
+    <div class="pages">
+        <section class="cover center">
+            <h1>Music DSL</h1>
+            <p>R02 170476</p>
+        </section>
+        <section class="center">
+            <h1 class="top left">自己</h1>
+            <img style="float: left;width: 15%; border-radius: 50%; margin-right: .45em;" src="data:image/jpeg;base64,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" alt="[ここにアイコン画像]">
+            <p>
+                <b>ねうねう</b>
+                <a style="font-size: .65em;" href="https://twitter.com/y_miyak_public">@y_miyak_public</a>
+            </p>
+            <p>専ら "うすい" と呼ばれている。</p>
+        </section>
+        <section class="center">
+            <h1>何作るの</h1>
+        </section>
+        <section class="center">
+            <header style="padding-top: 2.5em;"><p>何作るの</p></header>
+            <h1>卒制での目標</h1>
+            <p>任意に変化させることのできる楽曲情報</p>
+            <div class="inc">
+                <p style="writing-mode: vertical-rl;">＝</p>
+                <p >　　　 <b>動的な音楽</b> の提示</p>
+            </div>
+        </section>
+        <section class="center">
+            <header><p>何作るの</p></header>
+            <h1>欲しいもの</h1>
+            <p><b>新しい 「音楽の出力形式」</b></p>
+        </section>
+        <section class="center">
+            <h1>何のために？</h1>
+            <ul>
+                <li>音楽を動的に扱うため</li>
+                <li>動的な音楽を[作曲⇒出力]するため</li>
+            </ul>
+        </section>
+        <section class="center">
+            <header><p>何のために？</p></header>
+            <h1>音楽を動的に扱うため</h1>
+        </section>
+        <section>
+            <!-- <input type="checkbox"> -->
+            <header><p>何のために？</p><p>音楽を動的に扱うため</p></header>
+            <h1>インタラクティブミュージック</h1>
+            <p>昨今、ゲーム音楽分野でよく聞く単語。</p>
+            <p>「<b>操作</b>(ユーザー)」と <b>相互作用</b> する <b>音楽</b></p>
+            <section class="center inc">
+                <h1>ユーザー ⇔ ゲームロジック ⇔ BGM</h1>
+                <ul style="font-size: 1.5em; line-height: 1.8em;">
+                    <li>敵に近づくと戦闘曲に遷移</li>
+                    <li>天候が変わるとBGMが変化</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <!-- <input type="checkbox"> -->
+            <!-- <input type="checkbox"> -->
+            <!-- <input type="checkbox"> -->
+            <header><p>何のために？</p><p>音楽を動的に扱うため</p></header>
+            <h1>現状の "インタラクティブ"</h1>
+            <p>-> 音楽 = 波形データ</p>
+            <section class="inc" style="margin-top: .8em;">
+                <h1>実現手法の現状</h1>
+                <p><span>実際に実現されているインタラクティブミュージック技術のほとんどは、<wbr>「どう波形データを再生するか」<wbr>の技術として実装されている。</span></p>
+            </section>
+            <section class="inc" style="margin-top: .8em; margin-bottom: .8em;">
+                <h1>そもそも</h1>
+                <p>DAW(= 作曲ソフト) は、<wbr>「最終的な成果物として波形データを出力する」<wbr>ソフトウェア。</p>
+            </section>
+            <p><b>= 波形データの再生方法の工夫</b></p>
+        </section>
+        <section>
+            <!-- <input type="checkbox"> -->
+            <header><p>何のために？</p><p>音楽を動的に扱うため</p></header>
+            <h1>波形データによる動的な音楽</h1>
+            <p>DAW -> 波形データ(リソース) -> 別ソフトウェア開発</p>
+            <section class="inc">
+                <!-- <h1><ruby>怠<rt>だる</rt></ruby>さ</h1> -->
+                <h1>だるさ</h1>
+                <p><span>用いるフレーズの全パターンをDAW等から出力(波形データを用意)<wbr>(DAWプロジェクトでの管理も面倒)</span></p>
+                <p>大量の波形データをゲームプロジェクトが頑張って管理</p>
+                <ul style="--list-header: '！';">
+                    <li>
+                        仕様変更、楽曲中の一部を変更<br>
+                        -> 変更部分を含む全パターンを再出力
+                    </li>
+                    <li>
+                        仕様変更、新たな展開を用意<br>
+                        -> ファイル数増加 <wbr>新規パターンと既存パターンとの繋がりに破綻がないか確認
+                    </li>
+                </ul>
+                <section>
+                    <h1>いい感じのツールチェーンとかないと辛すぎる</h1>
+                    <p>あっても諸々の整合性確認や全体把握がつらい</p>
+                </section>
+            </section>
+        </section>
+        <section>
+            <header><p>何のために？</p><p>音楽を動的に扱うため</p></header>
+            <h1 style="font-size: 2.25em;">ので、</h1>
+            <section class="center" style="position: absolute;">
+                <h1 style="font-size: 2.3em;">「パターンが纏まるデータ形式」</h1>
+                <p>で、利便性の拡充を目指そう。</p>
+            </section>
+        </section>
+        <section class="center">
+            <header><p>何のために？</p></header>
+            <h1>動的な音楽を[作曲⇒出力]するため</h1>
+        </section>
+        <section>
+            <header><p>何のために？</p><p>動的な音楽を[作曲⇒出力]するため</p></header>
+            <h1>波形データの加工は難しい</h1>
+            <section>
+                <h1>音程を下げる - ピッチシフト</h1>
+                <p>音声を引き延ばせば音程も下がる。</p>
+                <p>引き延ばしたやつからデータをとって、音源の尺を同一に保つ。</p>
+            </section>
+            <section>
+                <h1>だんだんテンポを下げる(遅くする) - タイムストレッチの亜種</h1>
+                <p>長くなるので全略。めっちゃむずかしい😇😇😇😇😇</p>
+            </section>
+            <p style="padding-top: .4em;">そも、波形データの加工は "ある時間の全要素を対象にとった加工" になる。</p>
+            <section class="center inc">
+                <h1>=> <b>もっと自由度が欲しい！</b></h1>
+            </section>
+        </section>
+        <section>
+            <header><p>何のために？</p><p>動的な音楽を[作曲⇒出力]するため</p></header>
+            <h1>音楽には "セオリー"(構造) がある</h1>
+            <p>楽曲の部分的な構造を示す、色々な音楽用語。</p>
+            <div style="flex-direction: row; align-items: flex-start;">
+                <section>
+                    <h1>リズムの関連性</h1>
+                    <section>
+                        <h1>拍子</h1>
+                        <p>比率による、繰り返し構造における "長さ" の指標</p>
+                    </section>
+                    <section>
+                        <h1>N分[音符/休符]</h1>
+                        <p>比率による、各短音の "長さ" の指標</p>
+                    </section>
+                </section>
+                <section>
+                    <h1>音程の関連性</h1>
+                    <section>
+                        <h1>キー - 調</h1>
+                        <p>区間で用いられる音々の関係性</p>
+                    </section>
+                    <section>
+                        <h1>コード進行</h1>
+                        <p>雰囲気の流れ</p>
+                    </section>
+                    <section>
+                        <h1>コード - 和音</h1>
+                        <p>瞬間の音の重なり方</p>
+                    </section>
+                    <section>
+                        <h1>コードトーン</h1>
+                        <p>コードを構成する音 メロディ構築の基準になり得る</p>
+                    </section>
+                </section>
+            </div>
+        </section>
+        <section>
+            <header><p>何のために？</p><p>動的な音楽を[作曲⇒出力]するため</p></header>
+            <h1>DAWはすごいぞ、便利だぞ</h1>
+            <p>DAWでの、[楽曲構造, 音楽理論]の活用事例</p>
+            <section>
+                <h1>Studio One - PreSonus</h1>
+                <p>
+                    [MIDI/オーディオ]データからコード情報を抽出。<br>
+                    その上で、コードデータの変更に [MIDI/オーディオ]データを追従させる。
+                </p>
+            </section>
+            <section>
+                <h1>Band-in-a-Box - PG MUSIC</h1>
+                <p>
+                    コード進行を入力してバックトラックを作成するソフト。<br>
+                    メロディーに自動でコード進行を付与。
+                </p>
+            </section>
+            <div class="inc">
+                <p class="center" style="font-size: 2.2em;">でもみんな出力するのは波形データ</p>
+                <p>楽曲作成ソフトだもんね・・・</p>
+            </div>
+        </section>
+        <section>
+            <header><p>何のために？</p><p>動的な音楽を[作曲⇒出力]するため</p></header>
+            <h1 style="font-size: 2.25em;">ので、</h1>
+            <section class="center" style="position: absolute;">
+                <h1 style="font-size: 2.3em;">「構造化されたデータ形式」</h1>
+                <p>で、より自由に扱える出力を実現しよう。</p>
+            </section>
+        </section>
+        <section class="center">
+            <h1>そうはいっても難しい</h1>
+        </section>
+        <section>
+            <header><p>そうはいっても難しい</p></header>
+            <h1>必要なもの</h1>
+            <p>「新しい形式」を定義するのに想定しなきゃいけない諸々・・・</p>
+            <section>
+                <h1>想定されるエコシステムの構成要素</h1>
+                <ul>
+                    <li>構造化された楽曲を作曲するためのツール</li>
+                    <li>構造化された楽曲を出力するための表現の定義</li>
+                    <li>構造化された楽曲をアセットとして利用するためのインターフェース</li>
+                </ul>
+            </section>
+            <section>
+                <h1>実例を示すのに必要</h1>
+                <ul>
+                    <li>構造化された楽曲</li>
+                    <li>構造化された楽曲を用いるアプリケーション(今回例に上げた種別だと "ゲーム")</li>
+                </ul>
+            </section>
+            <p>卒制でこれを作る？</p>
+            <p class="center inc" style="font-size: 2.2em;">無理。</p>
+        </section>
+        <section>
+            <header><p>そうはいっても難しい</p></header>
+            <h1 style="font-size: 2.25em;">じゃあ、</h1>
+            <section class="center" style="position: absolute;">
+                <h1 style="font-size: 2.3em;">動的に扱える音楽</h1>
+                <p>の実例を示して可能性を見出してもらおう・・・。</p>
+            </section>
+        </section>
+        <section class="center">
+            <header style="padding-top: 2.5em;"><p>何作るの</p></header>
+            <h1>卒制での目標</h1>
+            <p>任意に変化させることのできる楽曲情報</p>
+            <div>
+                <p style="writing-mode: vertical-rl;">＝</p>
+                <p >　　　 <b>動的な音楽</b> の提示</p>
+            </div>
+        </section>
+        <section>
+            <h1>想定される問題</h1>
+            <ul>
+                <li>
+                    楽曲が、作曲者の意図する範囲を外れていく恐れ<br>
+                    -> 任意に動的である音楽の拡張性に、意図して収拾をつけたくなりそう
+                </li>
+                <li>
+                    利用時に音楽用の計算処理が嵩む([データ再生 = DAWを動かしているに等しい行為]になるはず)<br>
+                    -> リリースビルド時に "静的に判断できる範囲で予め波形化しておく" みたいな処理を組み込むとかやれそう</p>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h1 style="font-size: 2em;">参考文献</h1>
+            <ul>
+                <li><a href="https://note.com/geekdrums/n/naeac6465b1a5">note.com</a></li>
+                <li><a href="https://cedec.cesa.or.jp/2020/session/detail/s5e673208d9653">「歌い出すSympathy」、PSO2のボーカルBGM ... - CEDEC2020</a></li>
+                <li><a href="https://dic.nicovideo.jp/a/インタラクティブミュージック">インタラクティブミュージック - dic.nicovideo.jp</a></li>
+                <li><a href="https://watanabejunya.com/melody-to-chord/">コード進行にメロディーをつける！丁寧解説！ - watanabejunya.com</a></li>
+            </ul>
+        </section>
+    </div>
+</form>
+</body>
+</html>

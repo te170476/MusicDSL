@@ -1,0 +1,100 @@
+
+.slideshow {
+    --em-per: .5;
+    
+    --base-r: 58;
+    --base-g: 56;
+    --base-b: 57;
+    --base-color: rgb(var(--base-r), var(--base-g), var(--base-b));
+    background-color: var(--base-color);
+    color: #FFFFFF;
+}
+
+/* section */
+body,
+.slideshow div,
+.slideshow > .pages > section:first-of-type,
+.slideshow > .pages > section:first-of-type > header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.slideshow > .pages section {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+}
+.slideshow > .pages section > section{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 95%;
+}
+.slideshow section > section:first-of-type {
+    padding-top: 1%;
+}
+.slideshow section > section {
+    padding-bottom: 1%;
+}
+/* h1 */
+/* .slideshow > .pages > section h1:first-child { padding-top: 0.2em; } */
+.slideshow section h1 { font-size: 165%; }
+.slideshow > .pages > section:first-of-type h1 { font-size: 370%; line-height: 1.2em; }
+.slideshow > .pages > section > h1 { font-size: 250%; padding-bottom: 0.1em; line-height: 1.15em; }
+.slideshow > .pages > section > h1:first-child { line-height: 1.75em; }
+
+/* header */
+.slideshow > .pages > section > header {
+    display: inline-flex;
+    align-items: center;
+    padding-right: .2em;
+    color: var(--header-font-color);
+}
+.slideshow > .pages > section > header > p::before {
+    content: ">";
+    margin-left: .25em;
+    margin-right: .25em;
+}
+.slideshow > .pages > section > header > p:first-of-type::before { content: "#"; }
+
+.slideshow p { line-height: 1.75em; }
+.slideshow b { font-size: 120%; }
+.slideshow span { white-space: nowrap;}
+.slideshow ruby {}
+.slideshow ruby rt {}
+.slideshow ul {
+    --list-header: "-";
+    display: flex;
+    flex-direction: column;
+    padding-left: .3em;
+}
+.slideshow li::before {
+    content: var(--list-header);
+    display: block;
+    padding-right: .3em;
+}
+.slideshow li {
+    display: flex;
+    flex-direction: row;
+}
+
+/* set position */
+.slideshow .center {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.slideshow .top    { position: absolute; top:    0; }
+.slideshow .left   { position: absolute; left:   0; }
+.slideshow .bottom { position: absolute; bottom: 0; }
+.slideshow .row  { width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center;; }
+
+
+.slideshow .speech {
+    visibility: hidden;
+    /* position: fixed; */
+    /* bottom: 0; */
+}
