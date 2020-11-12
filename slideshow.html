@@ -14,24 +14,7 @@
     <input type="checkbox">
     <input type="checkbox">
     <input type="checkbox">
-    <input type="radio" name="flip">
-    <!-- <input type="radio" name="flip" checked> -->
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
-    <input type="radio" name="flip">
+    <input type="checkbox">
     <input type="button" name="sessionToggler">
     <div class="pages">
         <section class="cover center">
@@ -271,24 +254,57 @@
                 <p >　　　 <b>動的な音楽</b> の提示</p>
             </div>
         </section>
+        <section class="center">
+            <header><p>つまり　</p></header>
+            <h1>作曲するよ！</h1>
+            <p>(学科違くない？)</p>
+        </section>
         <section>
-            <h1>想定される問題</h1>
-            <ul>
-                <li>
-                    楽曲が、作曲者の意図する範囲を外れていく恐れ<br>
-                    -> 任意に動的である音楽の拡張性に、意図して収拾をつけたくなりそう
-                </li>
-                <li>
-                    利用時に音楽用の計算処理が嵩む([データ再生 = DAWを動かしているに等しい行為]になるはず)<br>
-                    -> リリースビルド時に "静的に判断できる範囲で予め波形化しておく" みたいな処理を組み込むとかやれそう</p>
-                </li>
-            </ul>
+            <header><p>作曲するよ！</p></header>
+            <h1>なに使おう</h1>
+            <section>
+                <h1>バックエンド - Rust</h1>
+                <p>音源としてVST使えたらいいな・・・。みたいな淡い期待がある。</p>
+            </section>
+            <section>
+                <h1>フロントエンド - CUI or Web</h1>
+                <p>
+                    GUIめんどいのでやだ。<br>
+                    Web Audio API が使いやすかったら、Webサービス としてつくりた味がある。
+                </p>
+            </section>
+            <section style="padding-top: .8em;">
+                <h1>他</h1>
+                <p>多分、「データ構造どうしよう・・・」を延々考える製作期間になる。</p>
+                <p>ほんとに期間内にできるんか？？？<span style="padding-left: 5em;font-size: .8em;">(↑考えるとこまでいけるといいね？？)</span></p>
+                <p>音が全部 "Sin波" になっても許してくれ・・・</p>
+            </section>
+        </section>
+        <section>
+            <h1>おしまい</h1>
+            <p>「ここんとこどーなの」とか「こんなんあるよ」とか</p>
+            <p>「スライドのここすき」とか「スライド内に図が1つもないのはどうかと思う」とか</p>
+            <p>なんかそんな発言を宜しければお願いします。</p>
+            <section>
+                <h1>想定される問題メモ</h1>
+                <p>「新しいフォーマット」に関して。</p>
+                <ul>
+                    <li>
+                        楽曲が、作曲者の意図する範囲を外れていく恐れ<br>
+                        -> 一応Interfaceっぽい形で楽曲の持ちうる振れ幅を定義できてほしいとか考えている
+                    </li>
+                    <li>
+                        利用時に音楽用の計算処理が嵩む([データ再生 = DAWを動かしているに等しい行為]になるはず)<br>
+                        -> リリースビルド時に "静的に判断できる範囲で予め波形化しておく" みたいな処理を組み込むとかやれそう</p>
+                    </li>
+                </ul>
+            </section>
         </section>
         <section>
             <h1 style="font-size: 2em;">参考文献</h1>
             <ul>
-                <li><a href="https://note.com/geekdrums/n/naeac6465b1a5">note.com</a></li>
-                <li><a href="https://cedec.cesa.or.jp/2020/session/detail/s5e673208d9653">「歌い出すSympathy」、PSO2のボーカルBGM ... - CEDEC2020</a></li>
+                <li><a href="https://note.com/geekdrums/n/naeac6465b1a5">ゼルダの伝説ブレスオブザワイルドのサントラを買う人が知らないゼルダBGMの裏側 - note.com</a></li>
+                <li><a href="https://www.famitsu.com/news/201509/09088051.html">『PSO2』の特徴的なサウンド表現が実例で説明されたセッションの模様をリポー... - famitsu.com</a></li>
                 <li><a href="https://dic.nicovideo.jp/a/インタラクティブミュージック">インタラクティブミュージック - dic.nicovideo.jp</a></li>
                 <li><a href="https://watanabejunya.com/melody-to-chord/">コード進行にメロディーをつける！丁寧解説！ - watanabejunya.com</a></li>
             </ul>

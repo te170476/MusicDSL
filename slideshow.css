@@ -89,7 +89,7 @@ body::-webkit-scrollbar { display:none; }
 .slideshow > input,
 .slideshow > .pages > section > input { position: absolute; opacity: 0; }
 /* page flip */
-.slideshow > input:nth-of-type(n+7) {
+/* .slideshow > input:nth-of-type(n+7) {
     width:   50%;
     height: 100%;
     z-index: 1;
@@ -117,7 +117,7 @@ body::-webkit-scrollbar { display:none; }
 .slideshow > input:nth-of-type(23):checked ~ .pages > section:nth-of-type(17) { visibility: visible; }
 .slideshow > input:nth-of-type(24):checked ~ .pages > section:nth-of-type(18) { visibility: visible; }
 .slideshow > input:nth-of-type(25):checked ~ .pages > section:nth-of-type(19) { visibility: visible; }
-.slideshow > input:nth-of-type(26):checked ~ .pages > section:nth-of-type(20) { visibility: visible; }
+.slideshow > input:nth-of-type(26):checked ~ .pages > section:nth-of-type(20) { visibility: visible; } */
 
 /* in page increment */
 /* .slideshow > .pages > section > section { visibility: hidden; } */

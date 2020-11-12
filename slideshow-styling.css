@@ -6,9 +6,11 @@
     --base-g: 56;
     --base-b: 57;
     --base-color: rgb(var(--base-r), var(--base-g), var(--base-b));
+    --font-color: #FFFFFF;
     background-color: var(--base-color);
-    color: #FFFFFF;
+    color: var(--font-color);
 }
+.slideshow *:visited { color: var(--font-color); }
 
 /* section */
 body,
