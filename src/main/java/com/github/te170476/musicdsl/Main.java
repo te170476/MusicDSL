@@ -10,9 +10,9 @@ public class Main {
         var player = new Player(format);
         var generator = new Generator(sampleRate);
         var sound = Arrays.asList(
-                new Sound(format, generator.sin(261.626, 2), 0 * sampleRate),
-                new Sound(format, generator.sin(329.628, 2), 0 * sampleRate),
-                new Sound(format, generator.sin(391.995, 2), 0 * sampleRate)
+                new Sound(generator.sin(261.626, 2), 0 * sampleRate),
+                new Sound(generator.sin(329.628, 2), 0 * sampleRate),
+                new Sound(generator.sin(391.995, 2), 0 * sampleRate)
         );
         player.playAndWait(sound);
     }
