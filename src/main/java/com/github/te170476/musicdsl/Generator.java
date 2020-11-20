@@ -1,12 +1,16 @@
 package com.github.te170476.musicdsl;
 
 public class Generator {
+    double pitchReference = 440.0;
     int amplitude = 127;
     int sampleRate;
     public Generator(int sampleRate) {
         this.sampleRate = sampleRate;
     }
 
+    public double getHertz(int pitch) {
+        return pitchReference * Math.pow(2, pitch / 12.0);
+    }
     public byte[] sin(double hertz, double second){
         int length = (int)(sampleRate * second);
         byte[] wave = new byte[length];
