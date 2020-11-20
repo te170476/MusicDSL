@@ -25,4 +25,17 @@ public class Generator {
         }
         return wave;
     }
+    public byte[] square(double hertz, double second){
+        int length = (int)(sampleRate * second);
+        byte[] wave = new byte[length];
+        double byteParAmplitude = sampleRate / hertz;
+        for(int index = 0; index < wave.length; index++){
+            int count = (int) (index / (byteParAmplitude / 2));
+            if (count % 2 == 0)
+                wave[index] = Byte.MAX_VALUE;
+            else
+                wave[index] = Byte.MIN_VALUE;
+        }
+        return wave;
+    }
 }
