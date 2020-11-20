@@ -16,4 +16,13 @@ public class Generator {
         }
         return wave;
     }
+    public byte[] saw(double hertz, double second){
+        int length = (int)(sampleRate * second);
+        byte[] wave = new byte[length];
+        double byteParAmplitude = sampleRate / hertz;
+        for(int index = 0; index < wave.length; index++){
+            wave[index] = (byte) ((amplitude * 2) * ((index / byteParAmplitude) % 1.0));
+        }
+        return wave;
+    }
 }
