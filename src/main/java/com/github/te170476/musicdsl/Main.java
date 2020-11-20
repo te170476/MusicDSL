@@ -2,6 +2,7 @@ package com.github.te170476.musicdsl;
 
 import javax.sound.sampled.AudioFormat;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,11 +10,11 @@ public class Main {
         AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, false);
         var player = new Player(format);
         var generator = new Generator(sampleRate);
-        var sound = Arrays.asList(
-                new Sound(generator.sin(261.626, 2), 0 * sampleRate),
-                new Sound(generator.sin(329.628, 2), 0 * sampleRate),
-                new Sound(generator.sin(391.995, 2), 0 * sampleRate)
+        List<Sound> sounds = Arrays.asList(
+                new Sound(generator.sin(generator.getHertz(12), 1), 0),
+                new Sound(generator.saw(generator.getHertz(0), 1), 0),
+                new Sound(generator.square(generator.getHertz(-12), 1), 0)
         );
-        player.playAndWait(sound);
+        player.playAndWait(sounds);
     }
 }
