@@ -1,5 +1,8 @@
 package com.github.te170476.musicdsl;
 
+import com.github.te170476.musicdsl.sound.Waves;
+import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
+
 import javax.sound.sampled.AudioFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -9,11 +12,12 @@ public class Main {
         int sampleRate = 44100;
         AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, false);
         var player = new Player(format);
-        var generator = new Generator(sampleRate);
+        var generator = new WaveGenerator(sampleRate);
         List<Sound> sounds = Arrays.asList(
-                new Sound(generator.sin(generator.getHertz(12), 1), 0),
-                new Sound(generator.saw(generator.getHertz(0), 1), 0),
-                new Sound(generator.square(generator.getHertz(-12), 1), 0)
+                new Sound(generator.generate(Waves.getHertz(12), sampleRate * 4, Waves.sin), 0),
+                new Sound(generator.generate(Waves.getHertz(0), sampleRate * 4, Waves.saw), sampleRate),
+                new Sound(generator.generate(Waves.getHertz(-12), sampleRate * 4, Waves.square), sampleRate * 2),
+                new Sound(generator.generate(Waves.getHertz(-24), sampleRate * 4, Waves.triangle), sampleRate * 3)
         );
         player.playAndWait(sounds);
     }
