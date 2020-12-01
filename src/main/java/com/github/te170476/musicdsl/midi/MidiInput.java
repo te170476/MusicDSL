@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class MidiInput{
     private final CopyOnWriteArraySet<Integer> onPressMidiKeySet = new CopyOnWriteArraySet<>();
-    private final MidiDevice device;
     private final AudioFormat format;
 
     public static Optional<MidiInput> open(AudioFormat format, MidiDevice device) {
@@ -31,7 +30,6 @@ public class MidiInput{
     }
     private MidiInput(MidiDevice device, AudioFormat format, Transmitter transmitter) {
         transmitter.setReceiver(new MidiInputReceiver(device.toString(), onPressMidiKeySet));
-        this.device = device;
         this.format = format;
     }
 
@@ -43,14 +41,14 @@ public class MidiInput{
                 .filter(it-> getTransmitter(it).isPresent())
                 .collect(Collectors.toList());
     }
-    public static Optional<MidiDevice> getMidiDeviceFrom(MidiDevice.Info info) {
+    private static Optional<MidiDevice> getMidiDeviceFrom(MidiDevice.Info info) {
         try {
             return Optional.of(MidiSystem.getMidiDevice(info));
         } catch (MidiUnavailableException e) {
             return Optional.empty();
         }
     }
-    public static Optional<Transmitter> getTransmitter(MidiDevice device) {
+    private static Optional<Transmitter> getTransmitter(MidiDevice device) {
         try {
             return Optional.of(device.getTransmitter());
         } catch (MidiUnavailableException e) {
@@ -58,20 +56,12 @@ public class MidiInput{
         }
     }
 
-    private static Optional<SourceDataLine> createSourceDataLine(AudioFormat format) {
-        try {
-            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-            if (!(AudioSystem.isLineSupported(info)))
-                return Optional.empty();
-            return Optional.of((SourceDataLine) AudioSystem.getLine(info));
-        } catch (LineUnavailableException ignored) {}
-        return Optional.empty();
-    }
     public void play() {
         var sampleRate = (int) format.getSampleRate();
         var sampleSize = format.getSampleSizeInBits();
         var channelCount = format.getChannels();
-        var bufferSize = sampleSize * channelCount * 64;
+        var bufferMagnification = 64;
+        var bufferSize = sampleSize * channelCount * bufferMagnification;
         var generator = new WaveGenerator(sampleRate);
         var player = Player.open(format, bufferSize).get();
 
