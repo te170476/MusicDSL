@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         int sampleRate = 44100;
         AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, false);
-        var player = new Player(format);
+        var player = Player.open(format).get();
         var generator = new WaveGenerator(sampleRate);
         List<Sound> sounds = Arrays.asList(
                 new Sound(generator.generate(Waves.getHertz(12), sampleRate * 4, Waves.sin), 0),
