@@ -1,10 +1,8 @@
-package com.github.te170476.musicdsl;
-import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
+package com.github.te170476.musicdsl.midi;
 
-import javax.sound.midi.*;
+import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
-import javax.sound.sampled.*;
-import java.util.Optional;
+import javax.sound.midi.ShortMessage;
 import java.util.Set;
 
 public class MidiInputReceiver implements Receiver {
@@ -16,6 +14,7 @@ public class MidiInputReceiver implements Receiver {
         System.out.println("midi connect");
     }
 
+    @Override
     public void send(MidiMessage message, long timeStamp){
         if(!(message instanceof ShortMessage)) return;
 
@@ -43,7 +42,6 @@ public class MidiInputReceiver implements Receiver {
         onPressKeySet.remove(key);
     }
 
+    @Override
     public void close(){}
-
-
 }

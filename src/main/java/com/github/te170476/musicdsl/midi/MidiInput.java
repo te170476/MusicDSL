@@ -1,5 +1,8 @@
-package com.github.te170476.musicdsl;
+package com.github.te170476.musicdsl.midi;
 
+import com.github.te170476.musicdsl.Converter;
+import com.github.te170476.musicdsl.Player;
+import com.github.te170476.musicdsl.Sound;
 import com.github.te170476.musicdsl.sound.Waves;
 import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
 
@@ -17,16 +20,16 @@ public class MidiInput{
     private final MidiDevice device;
     private final AudioFormat format;
 
-    public static Optional<MidiInput> open(MidiDevice device, AudioFormat format) {
+    public static Optional<MidiInput> open(AudioFormat format, MidiDevice device) {
         try {
             device.open();
         } catch (MidiUnavailableException e) {
             return Optional.empty();
         }
-        return Optional.of(new MidiInput(device, format));
+        return getTransmitter(device)
+                .map(it-> new MidiInput(device, format, it));
     }
-    private MidiInput(MidiDevice device, AudioFormat format) {
-        var transmitter = getTransmitter(device).get();
+    private MidiInput(MidiDevice device, AudioFormat format, Transmitter transmitter) {
         transmitter.setReceiver(new MidiInputReceiver(device.toString(), onPressMidiKeySet));
         this.device = device;
         this.format = format;
@@ -70,19 +73,13 @@ public class MidiInput{
         var channelCount = format.getChannels();
         var bufferSize = sampleSize * channelCount * 64;
         var generator = new WaveGenerator(sampleRate);
-        var dataLine = createSourceDataLine(format).get();
-        try {
-            dataLine.open(format, bufferSize);
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-        dataLine.start();
+        var player = Player.open(format, bufferSize).get();
 
         var offsetMap = new HashMap<Integer, Integer>();
         while (true) {
             if(onPressMidiKeySet.size() <= 0) {
                 offsetMap.clear();
-                dataLine.drain();
+                player.dataLine.drain();
                 continue;
             }
             var waves =
@@ -100,11 +97,11 @@ public class MidiInput{
             for (byte[] it : waves.collect(Collectors.toList())){
                 wave = Converter.merge(wave, new Sound(it, 0));
             }
-            dataLine.write(wave, 0, wave.length);
+            player.play(wave);
         }
     }
 
-    public static void main(String[] args) throws LineUnavailableException {
+    public static void main(String[] args) {
         var devices = getMidiDevices();
         for (int index = 0; index < devices.size(); index++) {
             System.out.println(index +": "+ devices.get(index).getDeviceInfo());
@@ -118,7 +115,7 @@ public class MidiInput{
         var sampleSize = 8;
         var channelCount = 1;
         var format = new AudioFormat(sampleRate, sampleSize, channelCount, true, false);
-        MidiInput.open(device, format)
+        MidiInput.open(format, device)
             .ifPresent(MidiInput::play);
     }
 }
