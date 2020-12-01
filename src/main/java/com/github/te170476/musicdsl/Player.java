@@ -1,47 +1,65 @@
 package com.github.te170476.musicdsl;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
+import javax.sound.sampled.*;
 import java.util.Collection;
 import java.util.Optional;
 
 public class Player {
-    AudioFormat format;
-    public Player(AudioFormat format) {
-        this.format = format;
+    public SourceDataLine dataLine;
+
+    public static Optional<Player> open(AudioFormat format) {
+        return open(format, 512);
+    }
+    public static Optional<Player> open(AudioFormat format, int bufferSize) {
+        return createSourceDataLine(format)
+                .filter(it-> open(it, format, bufferSize))
+                .map(Player::new);
+    }
+    private static Optional<SourceDataLine> createSourceDataLine(AudioFormat format) {
+        try {
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+            if (!(AudioSystem.isLineSupported(info)))
+                return Optional.empty();
+            return Optional.of((SourceDataLine) AudioSystem.getLine(info));
+        } catch (LineUnavailableException ignored) {}
+        return Optional.empty();
+    }
+    private static boolean open(SourceDataLine dataLine, AudioFormat format, int bufferSize) {
+        try {
+            dataLine.open(format, bufferSize);
+        } catch (LineUnavailableException e) {
+            return false;
+        }
+        return true;
+    }
+    private Player(SourceDataLine dataLine) {
+        this.dataLine = dataLine;
+        dataLine.start();
     }
 
-    public Optional<Clip> play(Collection<Sound> sounds){
+    public void play(Collection<Sound> sounds){
         byte[] wave = new byte[]{};
         for (Sound sound : sounds){
             wave = Converter.merge(wave, sound);
         }
-        return play(wave);
+        play(wave);
     }
-    public Optional<Clip> play(byte[] wave) {
-        try {
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
-            Clip clip = (Clip) AudioSystem.getLine(info);
-            clip.open(format, wave, 0, wave.length);
-            clip.start();
-            return Optional.of(clip);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+    public void play(byte[] wave) {
+        dataLine.write(wave, 0, wave.length);
     }
     public void playAndWait(Collection<Sound> sounds) {
-        play(sounds).ifPresent(this::waitClip);
+        play(sounds);
+        waitClip(dataLine);
     }
     public void playAndWait(byte[] wave) {
-        play(wave).ifPresent(this::waitClip);
+        play(wave);
+        waitClip(dataLine);
     }
-    private void waitClip(Clip clip) {
+    private void waitClip(SourceDataLine dataLine) {
         try {
             Thread.sleep(100);
-            while (clip.isRunning()){}
+            while (dataLine.available() != 0){}
+            dataLine.drain();
         } catch (InterruptedException e){
             e.printStackTrace();
         }

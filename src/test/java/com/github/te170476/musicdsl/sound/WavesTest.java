@@ -18,7 +18,7 @@ class WavesTest {
     int sampleRate = 44100;
     AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, false);
     WaveGenerator generator = new WaveGenerator(sampleRate);
-    Player player = new Player(format);
+    Player player = Player.open(format).get();
 
     List<Sound> sounds = Collections.emptyList();
     int playLength = sampleRate * 2;
