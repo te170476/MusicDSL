@@ -2,6 +2,7 @@ package com.github.te170476.musicdsl.score;
 
 import com.github.te170476.musicdsl.Player;
 import com.github.te170476.musicdsl.Sound;
+import com.github.te170476.musicdsl.score.note.NoteValue;
 import com.github.te170476.musicdsl.sound.Waves;
 import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class NoteTest {
     @Test
     void toSound() {
         var notes = IntStream.range(-48, 49)
-                .mapToObj(pitch-> new Note(pitch, 32))
+                .mapToObj(pitch-> new Note(pitch, NoteValue.get(32)))
                 .collect(Collectors.toList());
         List<Sound> sounds = new ArrayList<>();
         int offset = 0;
