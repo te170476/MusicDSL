@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NoteValue {
-    public static InnerNode get(int... index) {
+    public static INoteValue get(int... index) {
         return new Values(
                 Arrays.stream(index)
                         .mapToObj(Value::get)
                         .collect(Collectors.toList())
         );
     }
-    public static InnerNode get(INoteValue... index) {
+    public static INoteValue get(INoteValue... index) {
         return new Values(
                 Arrays.stream(index)
                         .collect(Collectors.toList())
@@ -20,11 +20,7 @@ public class NoteValue {
     }
 
     public interface LeafNode extends INoteValue {}
-    public interface InnerNode extends INoteValue {
-        default INoteValue setBase(INoteValue base) {
-            return new HasBase(base, this);
-        }
-    }
+    public interface InnerNode extends INoteValue {}
 
     static class Value implements LeafNode {
         public final int value;
@@ -41,6 +37,7 @@ public class NoteValue {
             return (double) 1 / value;
         }
     }
+    
     static class Values implements InnerNode {
         public List<INoteValue> leaves;
         public Values(List<INoteValue> leaves) {
@@ -54,7 +51,7 @@ public class NoteValue {
                     .sum();
         }
     }
-    static class HasBase implements INoteValue {
+    static class HasBase implements InnerNode {
         public INoteValue base;
         public INoteValue value;
         public HasBase(INoteValue base, INoteValue value) {
