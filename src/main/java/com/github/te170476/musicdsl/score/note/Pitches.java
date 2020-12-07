@@ -1,18 +1,21 @@
 package com.github.te170476.musicdsl.score.note;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Pitches {
-    private static final int max = 12;
+    public static final int max = 12;
     private static final List<Pitch> pitches =
             IntStream.range(0, max)
                     .mapToObj(Pitch::new)
                     .collect(Collectors.toUnmodifiableList());
     public static Pitch get(int index) {
-        return pitches.get(index % max);
+        var surplus = index % max;
+        if (surplus < 0)
+            return pitches.get(max + surplus);
+        else
+            return pitches.get(surplus);
     }
 //    public static final Pitch De = get(11);
     public static final Pitch Do = get(0);
@@ -50,8 +53,8 @@ public class Pitches {
     public static final Pitch minorSeventh = get(10);
     public static final Pitch seventh = get(11);
 
-    public static final List<Pitch> major = Collections.unmodifiableList(List.of(major2, major3));
-    public static final List<Pitch> minor = Collections.unmodifiableList(List.of(minor2, minor3));
-    public static final List<Pitch> augmented = Collections.unmodifiableList(List.of(augmented2, augmented3));
-    public static final List<Pitch> diminished = Collections.unmodifiableList(List.of(diminished2, diminished3));
+    public static final List<Pitch> major = List.of(major2, major3);
+    public static final List<Pitch> minor = List.of(minor2, minor3);
+    public static final List<Pitch> augmented = List.of(augmented2, augmented3);
+    public static final List<Pitch> diminished = List.of(diminished2, diminished3);
 }
