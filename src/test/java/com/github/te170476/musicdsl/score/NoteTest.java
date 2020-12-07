@@ -20,7 +20,7 @@ class NoteTest {
     WaveGenerator generator = new WaveGenerator(sampleRate);
     Player player = Player.open(format).get();
 
-    int bpm = 120;
+    Tempo tempo = new Tempo(120);
 
     @Test
     void toSound() {
@@ -30,7 +30,7 @@ class NoteTest {
         List<Sound> sounds = new ArrayList<>();
         int offset = 0;
         for (Note note : notes) {
-            var sound = note.toSound(generator, bpm, offset, Waves.sin);
+            var sound = note.toSound(generator, tempo, offset, Waves.sin);
             offset += sound.wave.length - 1;
             sounds.add(sound);
         }

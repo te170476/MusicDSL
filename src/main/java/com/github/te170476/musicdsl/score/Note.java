@@ -8,15 +8,13 @@ import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
 
 public class Note{
     public int pitch;
-    public INoteValue rate;
-    public Note(int pitch, INoteValue rate){
+    public INoteValue noteValue;
+    public Note(int pitch, INoteValue noteValue){
         this.pitch = pitch;
-        this.rate = rate;
+        this.noteValue = noteValue;
     }
-    public Sound toSound(WaveGenerator generator, int bpm, int offset, IWaveGenerator waveGen) {
-        var wholeNoteSec = 240.0 / bpm;
-        var notePercentage = rate.toPercentage();
-        var noteSec = wholeNoteSec * notePercentage;
+    public Sound toSound(WaveGenerator generator, Tempo tempo, int offset, IWaveGenerator waveGen) {
+        var noteSec = tempo.toSecParNoteValue() * noteValue.toPercentage();
         var noteLength = (int) (noteSec * generator.sampleRate);
         var wave = generator.generate(Waves.getHertz(pitch), noteLength, waveGen);
         return new Sound(wave, offset);
