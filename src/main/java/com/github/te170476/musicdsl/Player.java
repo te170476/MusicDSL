@@ -56,12 +56,6 @@ public class Player {
         waitClip(dataLine);
     }
     private void waitClip(SourceDataLine dataLine) {
-        try {
-            Thread.sleep(100);
-            while (dataLine.available() != 0){}
-            dataLine.drain();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        dataLine.drain();
     }
 }
