@@ -5,11 +5,11 @@ public class Pitch {
     Pitch(int pitch) {
         this.value = pitch;
     }
-    public Pitch getRelative(Pitch scalar) {
+    public Pitch moved(Pitch scalar) {
         return Pitches.get(value + scalar.value);
     }
     public Key toKey(Key root) {
-        return root.getMovable(value);
+        return root.moved(this);
     }
 
     @Override

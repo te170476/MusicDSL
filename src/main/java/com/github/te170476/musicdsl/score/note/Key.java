@@ -6,7 +6,17 @@ public class Key {
         this.value = key;
     }
 
-    public Key getMovable(int scalar) {
-        return Keys.get(value + scalar);
+    public Key moved(Pitch scalar) {
+        return Keys.get(value + scalar.value);
+    }
+    public Pitch toPitch(Key root) {
+        return Pitches.get(Math.abs(value - root.value));
+    }
+
+    @Override
+    public String toString() {
+        return "Key{" +
+                "value=" + value +
+                '}';
     }
 }
