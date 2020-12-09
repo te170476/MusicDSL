@@ -2,6 +2,7 @@ package com.github.te170476.musicdsl.score;
 
 import com.github.te170476.musicdsl.Player;
 import com.github.te170476.musicdsl.Sound;
+import com.github.te170476.musicdsl.score.note.INoteValue;
 import com.github.te170476.musicdsl.score.note.NoteValue;
 import com.github.te170476.musicdsl.sound.Waves;
 import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
@@ -24,14 +25,14 @@ class NoteTest {
 
     @Test
     void toSound() {
-        var notes = IntStream.range(-48, 49)
-                .mapToObj(pitch-> new Note(pitch, NoteValue.get(32)))
+        var notes = IntStream.range(-12, 49)
+                .mapToObj(pitch-> new Note(pitch, NoteValue.get(4)))
                 .collect(Collectors.toList());
         List<Sound> sounds = new ArrayList<>();
-        int offset = 0;
+        INoteValue offset = NoteValue.get(4);
         for (Note note : notes) {
             var sound = note.toSound(generator, tempo, offset, Waves.sin);
-            offset += sound.wave.length - 1;
+            offset = NoteValue.get(offset, note.noteValue);
             sounds.add(sound);
         }
         player.playAndWait(sounds);
