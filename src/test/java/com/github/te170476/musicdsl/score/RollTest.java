@@ -11,8 +11,6 @@ import javax.sound.sampled.AudioFormat;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class RollTest {
     int sampleRate = 44100;
     AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, false);
@@ -25,7 +23,7 @@ class RollTest {
     void toSound() {
         var line = new Line(
                 IntStream.range(0, 25)
-                        .mapToObj(index-> new Note(index, NoteValue.get(16)))
+                        .mapToObj(index-> new Line.Note(index, NoteValue.get(16)))
                         .collect(Collectors.toList())
         );
         var roll = line.toRoll(NoteValue.get(32));

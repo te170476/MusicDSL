@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Roll {
-    static class RollNote {
-        public final Note note;
+    static class Note {
+        public final Line.Note note;
         public final INoteValue offset;
-        public RollNote(Note note, INoteValue offset){
+        public Note(Line.Note note, INoteValue offset){
             this.note = note;
             this.offset = offset;
         }
@@ -23,8 +23,9 @@ public class Roll {
             return note.toSound(generator, tempo, offset, waveGen);
         }
     }
-    public final List<RollNote> notes;
-    public Roll(List<RollNote> notes) {
+
+    public final List<Note> notes;
+    public Roll(List<Note> notes) {
         this.notes = notes;
     }
 
