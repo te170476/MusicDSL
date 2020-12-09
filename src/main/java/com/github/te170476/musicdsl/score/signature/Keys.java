@@ -1,17 +1,21 @@
-package com.github.te170476.musicdsl.score.note;
+package com.github.te170476.musicdsl.score.signature;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Keys {
-    private static final int max = 12;
+    public static final int max = 12;
     private static final List<Key> keys =
             IntStream.range(0, max)
                     .mapToObj(Key::new)
                     .collect(Collectors.toUnmodifiableList());
     public static Key get(int index) {
-        return keys.get(index % max);
+        var surplus = index % max;
+        if (surplus < 0)
+            return keys.get(max + surplus);
+        else
+            return keys.get(surplus);
     }
 //    public static final Key Cf = get(11);
     public static final Key C = get(0);
