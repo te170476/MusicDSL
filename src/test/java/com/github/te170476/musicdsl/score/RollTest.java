@@ -26,7 +26,7 @@ class RollTest {
                         .mapToObj(index-> new Line.Note(index, NoteValue.get(16)))
                         .collect(Collectors.toList())
         );
-        var roll = line.toRoll(NoteValue.get(32));
-        player.playAndWait(roll.toSound(generator, tempo, NoteValue.get(32), Waves.sin));
+        var roll = line.toRoll(NoteValue.get(0));
+        player.playAndWait(roll.toSound(generator, tempo, NoteValue.get(0), Waves.sin));
     }
 }
