@@ -1,10 +1,8 @@
-package com.github.te170476.musicdsl.score.note;
+package com.github.te170476.musicdsl.score.signature;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PitchesTest {
 

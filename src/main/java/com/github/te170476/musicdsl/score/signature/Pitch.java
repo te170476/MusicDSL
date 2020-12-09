@@ -1,4 +1,4 @@
-package com.github.te170476.musicdsl.score.note;
+package com.github.te170476.musicdsl.score.signature;
 
 public class Pitch {
     public final int value;
