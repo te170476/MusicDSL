@@ -20,4 +20,7 @@ public class Converter {
         }
         return out;
     }
+    public static double merge(double one, double two){
+        return 7.4 * Math.log10(Math.pow(7.4,one/7.4) + Math.pow(7.4,two/7.4));
+    }
 }
