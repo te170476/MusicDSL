@@ -1,4 +1,6 @@
-package com.github.te170476.musicdsl;
+package com.github.te170476.musicdsl.sound;
+
+import com.github.te170476.musicdsl.Sound;
 
 public class Converter {
     public static byte[] merge(byte[] wave1, Sound sound){

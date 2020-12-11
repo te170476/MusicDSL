@@ -1,6 +1,6 @@
 package com.github.te170476.musicdsl.midi;
 
-import com.github.te170476.musicdsl.Converter;
+import com.github.te170476.musicdsl.sound.Converter;
 import com.github.te170476.musicdsl.Player;
 import com.github.te170476.musicdsl.Sound;
 import com.github.te170476.musicdsl.sound.Waves;
