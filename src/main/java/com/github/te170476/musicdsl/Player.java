@@ -1,5 +1,7 @@
 package com.github.te170476.musicdsl;
 
+import com.github.te170476.musicdsl.sound.Converter;
+
 import javax.sound.sampled.*;
 import java.util.Collection;
 import java.util.Optional;

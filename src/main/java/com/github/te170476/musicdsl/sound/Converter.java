@@ -1,4 +1,6 @@
-package com.github.te170476.musicdsl;
+package com.github.te170476.musicdsl.sound;
+
+import com.github.te170476.musicdsl.Sound;
 
 public class Converter {
     public static byte[] merge(byte[] wave1, Sound sound){
@@ -17,5 +19,8 @@ public class Converter {
             out[index] = (byte) merged;
         }
         return out;
+    }
+    public static double merge(double one, double two){
+        return 7.4 * Math.log10(Math.pow(7.4,one/7.4) + Math.pow(7.4,two/7.4));
     }
 }
