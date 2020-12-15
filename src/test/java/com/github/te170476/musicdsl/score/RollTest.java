@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import javax.sound.sampled.AudioFormat;
 
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,15 +22,7 @@ class RollTest {
 
     @Test
     void toSound() {
-        var tones = List.of(
-                Pitches.Do.toTone(),
-                Pitches.Re.toTone(),
-                Pitches.Mi.toTone(),
-                Pitches.Fa.toTone(),
-                Pitches.Mi.toTone(),
-                Pitches.Re.toTone(),
-                Pitches.Do.toTone()
-        );
+        var tones = Pitches.Mi.toCode(Pitches.major).toTones();
         var notes = tones.stream()
                 .map(it-> it.toNote(NoteValue.get(4)))
                 .collect(Collectors.toList());

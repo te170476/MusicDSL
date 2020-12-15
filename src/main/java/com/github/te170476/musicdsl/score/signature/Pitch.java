@@ -1,5 +1,7 @@
 package com.github.te170476.musicdsl.score.signature;
 
+import java.util.List;
+
 public class Pitch {
     public final int value;
     Pitch(int pitch) {
