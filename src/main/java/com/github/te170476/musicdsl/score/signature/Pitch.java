@@ -12,6 +12,13 @@ public class Pitch {
         return root.moved(this);
     }
 
+    public Tone toTone() {
+        return new Tone(this, 0);
+    }
+    public Tone setOctave(int octaveScalar) {
+        return new Tone(this, octaveScalar);
+    }
+
     @Override
     public String toString() {
         return "Pitch{" +
