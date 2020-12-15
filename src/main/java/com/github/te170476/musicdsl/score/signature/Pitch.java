@@ -13,7 +13,7 @@ public class Pitch {
     }
 
     public Tone toTone() {
-        return new Tone(this, 0);
+        return this.setOctave(0);
     }
     public Tone setOctave(int octaveScalar) {
         return new Tone(this, octaveScalar);
