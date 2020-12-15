@@ -3,7 +3,7 @@ package com.github.te170476.musicdsl.score;
 import com.github.te170476.musicdsl.Sound;
 import com.github.te170476.musicdsl.score.note.INoteValue;
 import com.github.te170476.musicdsl.score.note.NoteValue;
-import com.github.te170476.musicdsl.score.signature.AbsoluteTone;
+import com.github.te170476.musicdsl.score.tone.AbsoluteTone;
 import com.github.te170476.musicdsl.sound.generator.IWaveGenerator;
 import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
 

@@ -1,5 +1,7 @@
 package com.github.te170476.musicdsl.score.signature;
 
+import com.github.te170476.musicdsl.score.tone.Tone;
+
 import java.util.List;
 
 public class Pitch {
@@ -19,6 +21,9 @@ public class Pitch {
     }
     public Tone setOctave(int octaveScalar) {
         return new Tone(this, octaveScalar);
+    }
+    public Code toCode(List<Pitch> pitches) {
+        return new Code(this, pitches);
     }
 
     @Override

@@ -1,4 +1,7 @@
-package com.github.te170476.musicdsl.score.signature;
+package com.github.te170476.musicdsl.score.tone;
+
+import com.github.te170476.musicdsl.score.signature.Key;
+import com.github.te170476.musicdsl.score.signature.Keys;
 
 public class AbsoluteTone {
     public Key key;

@@ -1,5 +1,7 @@
 package com.github.te170476.musicdsl.score.signature;
 
+import com.github.te170476.musicdsl.score.tone.Tone;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

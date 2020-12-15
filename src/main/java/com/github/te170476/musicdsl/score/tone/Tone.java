@@ -1,12 +1,13 @@
-package com.github.te170476.musicdsl.score.signature;
+package com.github.te170476.musicdsl.score.tone;
 
 import com.github.te170476.musicdsl.score.Line;
 import com.github.te170476.musicdsl.score.note.INoteValue;
+import com.github.te170476.musicdsl.score.signature.Pitch;
 
 public class Tone {
     public Pitch pitch;
     public int octaveScalar;
-    Tone(Pitch pitch, int octaveScalar) {
+    public Tone(Pitch pitch, int octaveScalar) {
         this.pitch = pitch;
         this.octaveScalar = octaveScalar;
     }
