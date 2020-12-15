@@ -3,6 +3,8 @@ package com.github.te170476.musicdsl.score;
 import com.github.te170476.musicdsl.Sound;
 import com.github.te170476.musicdsl.score.note.INoteValue;
 import com.github.te170476.musicdsl.score.note.NoteValue;
+import com.github.te170476.musicdsl.score.signature.AbsoluteTone;
+import com.github.te170476.musicdsl.score.signature.Tone;
 import com.github.te170476.musicdsl.sound.Waves;
 import com.github.te170476.musicdsl.sound.generator.IWaveGenerator;
 import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
@@ -11,19 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Line {
-    static class Note {
-        public int pitch;
+    public static class Note {
         public INoteValue noteValue;
-        public Note(int pitch, INoteValue noteValue){
-            this.pitch = pitch;
+        public Tone tone;
+        public Note(INoteValue noteValue, Tone tone){
             this.noteValue = noteValue;
+            this.tone = tone;
         }
-        public Sound toSound(WaveGenerator generator, Tempo tempo, INoteValue offset, IWaveGenerator waveGen) {
+        public Sound toSound(AbsoluteTone root, WaveGenerator generator, Tempo tempo, INoteValue offset, IWaveGenerator waveGen) {
+            var absoluteTone = tone.toAbsolute(root);
             var offsetSec = tempo.toSecParNoteValue() * offset.toPercentage();
             var offsetLength = (int)(offsetSec * generator.sampleRate);
             var noteSec = tempo.toSecParNoteValue() * noteValue.toPercentage();
             var noteLength = (int) (noteSec * generator.sampleRate);
-            var wave = generator.generate(Waves.getHertz(pitch), noteLength, waveGen);
+            var wave = generator.generate(Waves.getHertz(absoluteTone.getIntPitch()), noteLength, waveGen);
             return new Sound(wave, offsetLength);
         }
     }
