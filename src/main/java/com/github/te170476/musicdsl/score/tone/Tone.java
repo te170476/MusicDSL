@@ -1,7 +1,5 @@
 package com.github.te170476.musicdsl.score.tone;
 
-import com.github.te170476.musicdsl.score.Line;
-import com.github.te170476.musicdsl.score.note.INoteValue;
 import com.github.te170476.musicdsl.score.signature.Pitch;
 
 public class Tone {
@@ -10,10 +8,6 @@ public class Tone {
     public Tone(Pitch pitch, int octaveScalar) {
         this.pitch = pitch;
         this.octaveScalar = octaveScalar;
-    }
-
-    public Line.Note toNote(INoteValue noteValue) {
-        return new Line.Note(noteValue, this);
     }
 
     public AbsoluteTone toAbsolute(AbsoluteTone root) {
