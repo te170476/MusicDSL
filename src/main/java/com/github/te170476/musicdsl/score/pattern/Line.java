@@ -1,0 +1,25 @@
+package com.github.te170476.musicdsl.score.pattern;
+
+import com.github.te170476.Streams;
+import com.github.te170476.musicdsl.score.note.AbsoluteNote;
+import com.github.te170476.musicdsl.score.note.NoteValue;
+import com.github.te170476.musicdsl.score.note.RelativeNote;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Line<T> {
+    public final List<RelativeNote<T>> notes;
+    public Line(List<RelativeNote<T>> notes) {
+        this.notes = notes;
+    }
+    public List<AbsoluteNote<T>> toNotes() {
+        return Streams.reducingMap(notes.stream(), NoteValue.get(0),
+                (note, sum)-> NoteValue.get(sum, note.noteValue),
+                (note, offset)-> new AbsoluteNote<>(offset, note)
+        ).collect(Collectors.toList());
+    }
+    public Roll<T> toRoll() {
+        return new Roll<>(toNotes());
+    }
+}
