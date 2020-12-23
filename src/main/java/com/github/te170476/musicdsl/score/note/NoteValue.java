@@ -34,7 +34,7 @@ public class NoteValue {
 
         @Override
         public double toPercentage() {
-            return (double) 1 / value;
+            return value == 0 ? 0.0 : 1.0 / value;
         }
     }
     
