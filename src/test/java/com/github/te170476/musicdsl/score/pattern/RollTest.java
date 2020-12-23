@@ -111,7 +111,7 @@ class RollTest {
                 new AbsoluteNote<>(phrase1.noteValue(), roll.toNote())
         ));
 
-        var rootTone = new AbsoluteTone(key, 0);
+        var rootTone = key.toTone(0);
         Player.open(format)
                 .ifPresent(it-> it.playAndWait(rounded.toSound(rootTone, generator, tempo, NoteValue.get(0), Waves.square).collect(Collectors.toList())));
     }
