@@ -2,6 +2,7 @@ package com.github.te170476.musicdsl.score.pattern;
 
 import com.github.te170476.Streams;
 import com.github.te170476.musicdsl.score.note.AbsoluteNote;
+import com.github.te170476.musicdsl.score.note.INoteValue;
 import com.github.te170476.musicdsl.score.note.NoteValue;
 import com.github.te170476.musicdsl.score.note.RelativeNote;
 
@@ -12,6 +13,12 @@ public class Line<T> {
     public final List<RelativeNote<T>> notes;
     public Line(List<RelativeNote<T>> notes) {
         this.notes = notes;
+    }
+
+    public INoteValue noteValue() {
+        return notes.stream()
+                .map(it-> it.noteValue)
+                .reduce(NoteValue.get(0), (it, sum) -> NoteValue.get(sum, it));
     }
 
     public List<AbsoluteNote<T>> toNotes() {
