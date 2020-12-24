@@ -127,16 +127,15 @@ public class Main {
             }
         }).start();
         Player.open(format)
-                .ifPresent(player-> {
-                    rounded.notes.stream()
-                            .flatMap(it-> it.relative.thing.notes.stream())
-                            .flatMap(it-> it.relative.thing.notes.stream())
-                            .forEach(it-> {
-                                var key = list.get(0);
-                                var tone = key.toTone(0);
-                                player.play(it.relative.toSound(tone, generator, tempo, NoteValue.get(0), Waves.square).collect(Collectors.toList()));
-                            });
-                });
+                .ifPresent(player-> Streams
+                        .reducingMap(rounded.flatten(NoteValue.get(0)), NoteValue.get(0),
+                                (it, sum) -> it
+                                ).notes
+                        .forEach(it-> {
+                            var key = list.get(0);
+                            var tone = key.toTone(0);
+                            player.play(it.toSound(tone, generator, tempo, NoteValue.get(0), Waves.square).collect(Collectors.toList()));
+                        }));
     }
 
     public static <T> Line<T> genLine(List<INoteValue> rhythm, List<T> things) {

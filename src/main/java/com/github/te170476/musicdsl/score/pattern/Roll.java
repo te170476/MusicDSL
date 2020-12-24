@@ -13,6 +13,7 @@ import com.github.te170476.musicdsl.sound.generator.WaveGenerator;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Roll<T> implements Soundable {
@@ -32,6 +33,16 @@ public class Roll<T> implements Soundable {
                 .orElse(NoteValue.get(0));
     }
 
+    public <Leaf> Roll<Leaf> flatten() {
+        return new Roll<>(
+                this.<Leaf>flatten(NoteValue.get(0))
+                        .collect(Collectors.toList())
+        );
+    }
+    public <Leaf> Stream<AbsoluteNote<Leaf>> flatten(INoteValue initOffset) {
+        return notes.stream()
+                .flatMap(it-> it.flatten(initOffset));
+    }
     @Override
     public Stream<Sound> toSound(AbsoluteTone root, WaveGenerator generator, Tempo tempo, INoteValue initOffset, IWaveGenerator waveGen) {
         return notes.stream()
