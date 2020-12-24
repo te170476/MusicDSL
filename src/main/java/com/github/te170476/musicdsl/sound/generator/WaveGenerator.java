@@ -15,7 +15,6 @@ public class WaveGenerator {
     }
     public byte[] generate(double hertz, int length, int offset, IWaveGenerator waveGen, int strength) {
         var dbModoki = 50 *  Math.log10((double)strength / 127);
-        System.out.println(amplitude + dbModoki);
         byte[] wave = new byte[length];
         for(int index = 0; index < wave.length; index++){
             var parameters = new Parameters(sampleRate, index + offset, hertz);

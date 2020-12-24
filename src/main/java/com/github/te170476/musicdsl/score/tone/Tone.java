@@ -13,7 +13,6 @@ public class Tone {
     public AbsoluteTone toAbsolute(AbsoluteTone root) {
         var key = pitch.toKey(root.key);
         var octaveInc = root.key.value > key.value ? 1 : 0;
-        System.out.println(octaveInc);
         return new AbsoluteTone(key, root.octave + octaveScalar + octaveInc);
     }
 }
