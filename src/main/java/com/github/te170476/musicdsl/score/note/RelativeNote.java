@@ -23,10 +23,8 @@ public class RelativeNote<T> implements Soundable {
     public Stream<Sound> toSound(AbsoluteTone root, WaveGenerator generator, Tempo tempo, INoteValue initOffset, IWaveGenerator waveGen) {
         if (thing instanceof Tone) {
             var absoluteTone = ((Tone) thing).toAbsolute(root);
-            var offsetSec = tempo.toSecParNoteValue() * initOffset.toPercentage();
-            var offsetLength = (int)(offsetSec * generator.sampleRate);
-            var noteSec = tempo.toSecParNoteValue() * noteValue.toPercentage();
-            var noteLength = (int) (noteSec * generator.sampleRate);
+            var offsetLength = (int)(generator.sampleRate * initOffset.toSecond(tempo));
+            var noteLength = (int)(generator.sampleRate * noteValue.toSecond(tempo));
             var wave = generator.generate(Waves.getHertz(absoluteTone.getIntPitch()), noteLength, waveGen);
             return Stream.of(new Sound(wave, offsetLength));
         }

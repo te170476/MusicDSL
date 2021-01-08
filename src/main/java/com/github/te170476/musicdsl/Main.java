@@ -19,6 +19,7 @@ import javax.sound.sampled.AudioFormat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
@@ -126,16 +127,36 @@ public class Main {
                 }
             }
         }).start();
+
+        var beat = NoteValue.get(1, 1, 1, 1);
+        var beatMap = Collections.<Integer, Roll>emptyMap();
+        Streams.reducingMap(rounded.<Tone>flatten(NoteValue.get(0)), NoteValue.get(0),
+                (it, sum) -> NoteValue.get(sum, it.offset),
+                (note, offset) -> {
+                    var barNumber = (int)(offset.toPercentage() / beat.toPercentage());
+                    var soundNote = new AbsoluteNote<>(NoteValue.get(0), note.relative);
+                    if (beatMap.containsKey(barNumber)){
+                        var notes = beatMap.get(barNumber).notes;
+                        notes.add(soundNote);
+                        beatMap.put(barNumber, new Roll<>(notes));
+                    } else {
+                        beatMap.put(barNumber, new Roll<>(List.of(soundNote)));
+                    }
+                    return ".";
+                }
+        ).forEach(it-> System.out.print("."));
         Player.open(format)
-                .ifPresent(player-> Streams
-                        .reducingMap(rounded.flatten(NoteValue.get(0)), NoteValue.get(0),
-                                (it, sum) -> it
-                                ).notes
-                        .forEach(it-> {
+                .ifPresent(player->
+                        beatMap.forEach((barNumber, soundRoll)-> {
                             var key = list.get(0);
                             var tone = key.toTone(0);
-                            player.play(it.toSound(tone, generator, tempo, NoteValue.get(0), Waves.square).collect(Collectors.toList()));
-                        }));
+                            Stream<Sound> soundsStream = soundRoll.toSound(tone, generator, tempo, NoteValue.get(0), Waves.square);
+                            var sounds = soundsStream.collect(Collectors.toList());
+                            sounds.forEach(System.out::println);
+                            player.play(sounds);
+                        })
+                );
+
     }
 
     public static <T> Line<T> genLine(List<INoteValue> rhythm, List<T> things) {
