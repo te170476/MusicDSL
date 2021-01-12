@@ -20,10 +20,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -128,16 +130,22 @@ public class Main {
             }
         }).start();
 
-        var beat = NoteValue.get(1, 1, 1, 1);
-        var beatMap = Collections.<Integer, Roll>emptyMap();
+        var beat = NoteValue.get(1);
+        var beatMap = new HashMap<Integer, Roll<Tone>>();
         Streams.reducingMap(rounded.<Tone>flatten(NoteValue.get(0)), NoteValue.get(0),
                 (it, sum) -> NoteValue.get(sum, it.offset),
                 (note, offset) -> {
-                    var barNumber = (int)(offset.toPercentage() / beat.toPercentage());
-                    var soundNote = new AbsoluteNote<>(NoteValue.get(0), note.relative);
+                    Integer barNumber = (int)(note.offset.toPercentage() / beat.toPercentage());
+                    var diff = IntStream.range(0, barNumber)
+                            .mapToObj(index-> NoteValue.get(-1))
+                            .reduce(NoteValue.get(0), (it, sum)-> NoteValue.get(sum, it));
+                    var noteValue = NoteValue.get(note.offset, diff);
+                    System.out.println(barNumber +"sum: "+ note.offset.toPercentage() +", result: "+ noteValue.toPercentage());
+                    var soundNote = new AbsoluteNote<>(noteValue, note.relative);
                     if (beatMap.containsKey(barNumber)){
-                        var notes = beatMap.get(barNumber).notes;
-                        notes.add(soundNote);
+                        var notes = Stream
+                                .concat(beatMap.get(barNumber).notes.stream(), Stream.of(soundNote))
+                                .collect(Collectors.toList());
                         beatMap.put(barNumber, new Roll<>(notes));
                     } else {
                         beatMap.put(barNumber, new Roll<>(List.of(soundNote)));

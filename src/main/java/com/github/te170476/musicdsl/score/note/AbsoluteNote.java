@@ -24,7 +24,7 @@ public class AbsoluteNote<T> implements Soundable {
 
     public <Leaf> Stream<AbsoluteNote<Leaf>> flatten(INoteValue initOffset) {
         var offset = NoteValue.get(initOffset, this.offset);
-        if (!(relative.thing instanceof Roll)) return Stream.of((AbsoluteNote<Leaf>) this);
+        if (!(relative.thing instanceof Roll)) return Stream.of((AbsoluteNote<Leaf>) new AbsoluteNote<>(offset, relative));
         var roll = (Roll<Leaf>) relative.thing;
         return roll.flatten(offset);
     }
