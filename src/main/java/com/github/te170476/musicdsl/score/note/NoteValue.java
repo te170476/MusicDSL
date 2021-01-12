@@ -64,4 +64,14 @@ public class NoteValue {
             return value.toPercentage() * base.toPercentage();
         }
     }
+    static class Negative implements InnerNode {
+        public INoteValue value;
+        public Negative(INoteValue value) {
+            this.value = value;
+        }
+        @Override
+        public double toPercentage() {
+            return value.toPercentage() * -1;
+        }
+    }
 }

@@ -132,15 +132,14 @@ public class Main {
 
         var beat = NoteValue.get(1);
         var beatMap = new HashMap<Integer, Roll<Tone>>();
-        Streams.reducingMap(rounded.<Tone>flatten(NoteValue.get(0)), NoteValue.get(0),
-                (it, sum) -> NoteValue.get(sum, it.offset),
-                (note, offset) -> {
-                    Integer barNumber = (int)(note.offset.toPercentage() / beat.toPercentage());
+        rounded.<Tone>flatten().notes
+                .stream()
+                .map(note-> {
+                    var barNumber = (int)(note.offset.toPercentage() / beat.toPercentage());
                     var diff = IntStream.range(0, barNumber)
-                            .mapToObj(index-> NoteValue.get(-1))
+                            .mapToObj(index-> beat.negate())
                             .reduce(NoteValue.get(0), (it, sum)-> NoteValue.get(sum, it));
                     var noteValue = NoteValue.get(note.offset, diff);
-                    System.out.println(barNumber +"sum: "+ note.offset.toPercentage() +", result: "+ noteValue.toPercentage());
                     var soundNote = new AbsoluteNote<>(noteValue, note.relative);
                     if (beatMap.containsKey(barNumber)){
                         var notes = Stream
@@ -151,8 +150,7 @@ public class Main {
                         beatMap.put(barNumber, new Roll<>(List.of(soundNote)));
                     }
                     return ".";
-                }
-        ).forEach(it-> System.out.print("."));
+                }).forEach(it-> System.out.print("."));
         Player.open(format)
                 .ifPresent(player->
                         beatMap.forEach((barNumber, soundRoll)-> {
@@ -164,7 +162,6 @@ public class Main {
                             player.play(sounds);
                         })
                 );
-
     }
 
     public static <T> Line<T> genLine(List<INoteValue> rhythm, List<T> things) {

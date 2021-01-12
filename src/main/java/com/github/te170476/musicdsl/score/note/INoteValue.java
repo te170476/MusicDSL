@@ -10,6 +10,9 @@ public interface INoteValue {
     default INoteValue setBase(INoteValue base) {
         return new NoteValue.HasBase(base, this);
     }
+    default INoteValue negate() {
+        return new NoteValue.Negative(this);
+    }
     default double toSecond(Tempo tempo) {
         return toPercentage() * tempo.toSecParNoteValue();
     }
