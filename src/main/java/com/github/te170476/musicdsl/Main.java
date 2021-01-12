@@ -8,6 +8,7 @@ import com.github.te170476.musicdsl.score.note.NoteValue;
 import com.github.te170476.musicdsl.score.note.RelativeNote;
 import com.github.te170476.musicdsl.score.pattern.Line;
 import com.github.te170476.musicdsl.score.pattern.Roll;
+import com.github.te170476.musicdsl.score.signature.Codes;
 import com.github.te170476.musicdsl.score.signature.Key;
 import com.github.te170476.musicdsl.score.signature.Keys;
 import com.github.te170476.musicdsl.score.signature.Pitches;
@@ -19,10 +20,10 @@ import javax.sound.sampled.AudioFormat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -113,6 +114,7 @@ public class Main {
                 new AbsoluteNote<>(NoteValue.get(0), roll.toNote()),
                 new AbsoluteNote<>(phrase1.noteValue(), roll.toNote())
         ));
+        Codes.major
 
         var list = new CopyOnWriteArrayList<Key>();
         list.add(Keys.C);
@@ -130,11 +132,10 @@ public class Main {
             }
         }).start();
 
-        var beat = NoteValue.get(1);
+        var beat = NoteValue.get(1, 1);
         var beatMap = new HashMap<Integer, Roll<Tone>>();
         rounded.<Tone>flatten().notes
-                .stream()
-                .map(note-> {
+                .forEach(note-> {
                     var barNumber = (int)(note.offset.toPercentage() / beat.toPercentage());
                     var diff = IntStream.range(0, barNumber)
                             .mapToObj(index-> beat.negate())
@@ -149,17 +150,20 @@ public class Main {
                     } else {
                         beatMap.put(barNumber, new Roll<>(List.of(soundNote)));
                     }
-                    return ".";
-                }).forEach(it-> System.out.print("."));
+                });
+        AtomicReference<Thread> playNow = new AtomicReference<>(new Thread(() -> {}));
         Player.open(format)
                 .ifPresent(player->
                         beatMap.forEach((barNumber, soundRoll)-> {
                             var key = list.get(0);
                             var tone = key.toTone(0);
-                            Stream<Sound> soundsStream = soundRoll.toSound(tone, generator, tempo, NoteValue.get(0), Waves.square);
-                            var sounds = soundsStream.collect(Collectors.toList());
-                            sounds.forEach(System.out::println);
-                            player.play(sounds);
+                            var sounds = soundRoll
+                                    .toSound(tone, generator, tempo, NoteValue.get(0), Waves.square)
+                                    .collect(Collectors.toList());
+                            var beforePlay = playNow.get();
+                            playNow.set(new Thread(() -> player.play(sounds)));
+                            while (beforePlay.isAlive()) {}
+                            playNow.get().start();
                         })
                 );
     }
