@@ -5,7 +5,7 @@ import spray.json.DefaultJsonProtocol
 
 sealed trait Note
 object Note {
-  case class Create(offset: List[List[Int]]) extends Note
+  case class Create(offset: Seq[Seq[Int]]) extends Note
   trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
     implicit val createFormat = jsonFormat1(Create)
   }
