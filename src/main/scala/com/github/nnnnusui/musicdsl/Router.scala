@@ -4,6 +4,7 @@ import akka.http.scaladsl.server.Directives._
 import com.github.nnnnusui.musicdsl.repository.UsesDatabase
 
 import scala.concurrent.ExecutionContextExecutor
+import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 
 class Router(implicit val dispatcher: ExecutionContextExecutor, implicit val repositoryImpl: UsesDatabase) {
   object Note extends usecase.Note with repository.Note with router.Note {
@@ -32,5 +33,5 @@ class Router(implicit val dispatcher: ExecutionContextExecutor, implicit val rep
     pathSingleSlash {
       get { getFromResource("index.html") }
     } ~
-      rest
+      cors() { rest }
 }
