@@ -29,7 +29,7 @@ trait Roll {
       db.run {
         tableQuery.filter(_.id === entity.id).update(entity)
       }
-    def getByKeys(id: Int): Future[Option[Entity]] =
+    def getById(id: Int): Future[Option[Entity]] =
       db.run {
         tableQuery.filter(_.id === id).result.headOption
       }
