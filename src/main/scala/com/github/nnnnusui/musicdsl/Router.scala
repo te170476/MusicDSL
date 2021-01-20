@@ -23,21 +23,19 @@ class Router(implicit val dispatcher: ExecutionContextExecutor, implicit val rep
   } yield it
 
   val rest =
-    pathPrefix("rest") {
-      pathEndOrSingleSlash {
-        get { complete("version info") }
-      } ~
-        pathPrefix("1") {
-          pathEndOrSingleSlash {
-            get { complete("available") }
-          } ~
-            pathPrefix("rolls") { Roll.route } ~
-            pathPrefix("notes") { Note.route }
-        }
-    }
+    pathEndOrSingleSlash {
+      get { complete("version info") }
+    } ~
+      pathPrefix("1") {
+        pathEndOrSingleSlash {
+          get { complete("available") }
+        } ~
+          pathPrefix("rolls") { Roll.route } ~
+          pathPrefix("notes") { Note.route }
+      }
   val route =
     pathSingleSlash {
       get { getFromResource("index.html") }
     } ~
-      cors() { rest }
+      cors() { pathPrefix("rest") { rest } }
 }
