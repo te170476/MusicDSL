@@ -15,7 +15,7 @@ import spray.json.enrichAny
 class NoteTest extends AnyWordSpec with Matchers with ScalatestRouteTest with Input.JsonSupport {
   implicit val executionContext = system.dispatcher
   implicit val repositoryImpl: UsesDatabase = H2Database
-  val routes = new Router().Note.route
+  val routes = new Router().Note.route(1)
 
   "Note.route" should {
     "return no users if no present (GET /users)" in {

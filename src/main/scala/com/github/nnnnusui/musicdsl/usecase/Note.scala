@@ -12,14 +12,14 @@ trait Note {
   val useCase: UseCase
 
   implicit class InputCreateToEntity(it: Input.Create) {
-    def toEntity = Entity(it.offset, it.octave, it.pitch)
+    def toEntity(rollId: Int) = Entity(rollId, it.offset, it.octave, it.pitch)
   }
   implicit class EntityToOutput(it: Entity) {
     def toOutputCreate = Output.Create(it.offset, it.octave, it.pitch)
   }
   class UseCase(implicit val dispatcher: ExecutionContextExecutor) {
-    def use(input: Input.Create): Future[Output.Create] = {
-      val entity = input.toEntity
+    def use(rollId: Int, input: Input.Create): Future[Output.Create] = {
+      val entity = input.toEntity(rollId)
       repository
         .create(entity)
         .map(_ => entity.toOutputCreate)
