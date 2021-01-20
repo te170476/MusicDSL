@@ -1,7 +1,5 @@
 package com.github.nnnnusui.musicdsl.router
 
-import akka.actor.testkit.typed.javadsl.ActorTestKit
-import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
 import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model.{ContentTypes, MessageEntity, StatusCodes}
 import akka.http.scaladsl.server.Route
@@ -23,7 +21,7 @@ class NoteTest extends AnyWordSpec with Matchers with ScalatestRouteTest with In
     "return no users if no present (GET /users)" in {
       Get() ~> Route.seal(routes) ~> check {
         status should ===(StatusCodes.OK)
-        entityAs[String] should ===(s"""[]""")
+        entityAs[String] should ===(s"""{"values":[]}""")
       }
     }
     "be able to add entity (POST)" in {
