@@ -1,6 +1,5 @@
 package com.github.nnnnusui.musicdsl.repository
 
-import com.github.nnnnusui.musicdsl.entity.score
 import com.github.nnnnusui.musicdsl.entity.score.{Note => Entity}
 
 import scala.concurrent.Future
@@ -21,9 +20,9 @@ trait Note {
       def * = (offset, octave, pitch) <> (Entity.tupled, Entity.unapply)
     }
     protected val tableQuery = TableQuery[TableInfo]
-    protected def find(from: Entity): Query[TableInfo, score.Note, Seq] =
+    protected def find(from: Entity): Query[TableInfo, Entity, Seq] =
       find(from.offset, from.octave, from.pitch)
-    protected def find(offset: Int, octave: Int, pitch: Int): Query[TableInfo, score.Note, Seq] =
+    protected def find(offset: Int, octave: Int, pitch: Int): Query[TableInfo, Entity, Seq] =
       tableQuery
         .filter(_.offset === offset)
         .filter(_.octave === octave)
