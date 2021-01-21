@@ -28,5 +28,9 @@ trait Note {
       repository.getAll
         .map(_.map(_.toOutputCreate))
         .map(it => Output.GetAll(it))
+    def use(input: Input.Delete): Future[Output.Delete] =
+      repository
+        .delete(input.rollId, input.offset, input.octave, input.pitch)
+        .map(it => Output.Delete(it))
   }
 }

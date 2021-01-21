@@ -11,7 +11,8 @@ trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
     val action = new Action(rollId)
     pathEndOrSingleSlash {
       get { action.getAll } ~
-        post { action.create }
+        post { action.create } ~
+        delete { action.delete }
     }
   }
   class Action(rollId: Int) {
@@ -20,5 +21,9 @@ trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
         onComplete(useCase.use(rollId, input)) { result => complete(result) }
       }
     def getAll = onComplete(useCase.use(Input.GetAll())) { result => complete(result) }
+    def delete =
+      parameters("offset".as[Int], "octave".as[Int], "pitch".as[Int]) { (offset, octave, pitch) =>
+        onComplete(useCase.use(Input.Delete(rollId, offset, octave, pitch))) { result => complete(result) }
+      }
   }
 }
