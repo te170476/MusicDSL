@@ -35,6 +35,10 @@ trait Note {
       db.run {
         tableQuery += entity
       }
+    def creates(entities: Seq[Entity]): Future[Option[Int]] =
+      db.run {
+        tableQuery ++= entities
+      }
     def update(entity: Entity): Future[Int] =
       db.run {
         find(entity).update(entity)

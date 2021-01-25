@@ -5,6 +5,7 @@ import com.github.nnnnusui.musicdsl.input.{Note => Input}
 import com.github.nnnnusui.musicdsl.output.{Note => Output}
 import com.github.nnnnusui.musicdsl.repository.{Note => Repository}
 
+import scala.concurrent.impl.Promise
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
 trait Note {
@@ -18,11 +19,11 @@ trait Note {
     def toOutputCreate = Output.Create(it.offset, it.octave, it.pitch)
   }
   class UseCase(implicit val dispatcher: ExecutionContextExecutor) {
-    def use(rollId: Int, input: Input.Create): Future[Output.Create] = {
-      val entity = input.toEntity(rollId)
+    def use(rollId: Int, inputs: Seq[Input.Create]): Future[Seq[Output.Create]] = {
+      val entities = inputs.map(_.toEntity(rollId))
       repository
-        .create(entity)
-        .map(_ => entity.toOutputCreate)
+        .creates(entities)
+        .map(_ => entities.map(_.toOutputCreate))
     }
     def use(input: Input.GetAll): Future[Output.GetAll] =
       repository.getAll

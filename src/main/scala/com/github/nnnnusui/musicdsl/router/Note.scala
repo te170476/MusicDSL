@@ -18,8 +18,12 @@ trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
   class Action(rollId: Int) {
     def create =
       entity(as[Input.Create]) { input =>
-        onComplete(useCase.use(rollId, input)) { result => complete(result) }
-      }
+        onComplete(useCase.use(rollId, List(input))) { result => complete(result.map(_.head)) }
+      } ~
+        entity(as[Seq[Input.Create]]) { inputs =>
+          onComplete(useCase.use(rollId, inputs)) { result => complete(result) }
+        }
+
     def getAll = onComplete(useCase.use(Input.GetAll())) { result => complete(result) }
     def delete =
       parameters("offset".as[Int], "octave".as[Int], "pitch".as[Int]) { (offset, octave, pitch) =>
