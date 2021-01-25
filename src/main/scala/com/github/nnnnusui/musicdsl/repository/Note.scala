@@ -18,7 +18,8 @@ trait Note {
       def offset = column[Int]("offset")
       def octave = column[Int]("octave")
       def pitch = column[Int]("pitch")
-      def * = (rollId, offset, octave, pitch) <> (Entity.tupled, Entity.unapply)
+      def sticky = column[Boolean]("sticky")
+      def * = (rollId, offset, octave, pitch, sticky) <> (Entity.tupled, Entity.unapply)
     }
     protected val tableQuery = TableQuery[TableInfo]
     protected def find(from: Entity): Query[TableInfo, Entity, Seq] =

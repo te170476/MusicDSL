@@ -13,10 +13,10 @@ trait Note {
   val useCase: UseCase
 
   implicit class InputCreateToEntity(it: Input.Create) {
-    def toEntity(rollId: Int) = Entity(rollId, it.offset, it.octave, it.pitch)
+    def toEntity(rollId: Int) = Entity(rollId, it.offset, it.octave, it.pitch, it.sticky.getOrElse(false))
   }
   implicit class EntityToOutput(it: Entity) {
-    def toOutputCreate = Output.Create(it.offset, it.octave, it.pitch)
+    def toOutputCreate = Output.Create(it.offset, it.octave, it.pitch, it.sticky)
   }
   class UseCase(implicit val dispatcher: ExecutionContextExecutor) {
     def use(rollId: Int, inputs: Seq[Input.Create]): Future[Seq[Output.Create]] = {
