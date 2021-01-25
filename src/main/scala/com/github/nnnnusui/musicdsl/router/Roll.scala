@@ -7,7 +7,8 @@ import akka.http.scaladsl.server.{Directives, Route}
 
 trait Roll extends Directives with Input.JsonSupport with Output.JsonSupport {
   this: UseCase =>
-  val note: Int => Route
+  val noteRouter: Int => Route
+  val soundRouter: Int => Route
   val route =
     pathEndOrSingleSlash {
       get { Action.getAll } ~
@@ -17,7 +18,8 @@ trait Roll extends Directives with Input.JsonSupport with Output.JsonSupport {
         pathEndOrSingleSlash {
           get { Action.getById(id) }
         } ~
-          pathPrefix("notes") { note(id) }
+          pathPrefix("notes") { noteRouter(id) } ~
+          pathPrefix("sound") { soundRouter(id) }
       }
   object Action {
     def create =

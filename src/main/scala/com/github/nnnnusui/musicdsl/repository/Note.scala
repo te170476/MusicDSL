@@ -1,5 +1,6 @@
 package com.github.nnnnusui.musicdsl.repository
 
+import com.github.nnnnusui.musicdsl.entity.score
 import com.github.nnnnusui.musicdsl.entity.score.{Note => Entity}
 
 import scala.concurrent.Future
@@ -55,6 +56,11 @@ trait Note {
     def delete(rollId: Int, offset: Int, octave: Int, pitch: Int): Future[Int] =
       db.run {
         find(rollId, offset, octave, pitch).delete
+      }
+
+    def getByRollId(rollId: Int): Future[Seq[Entity]] =
+      db.run {
+        tableQuery.filter(_.rollId === rollId).result
       }
   }
 }

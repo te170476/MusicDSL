@@ -5,7 +5,6 @@ import com.github.nnnnusui.musicdsl.input.{Note => Input}
 import com.github.nnnnusui.musicdsl.output.{Note => Output}
 import com.github.nnnnusui.musicdsl.repository.{Note => Repository}
 
-import scala.concurrent.impl.Promise
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
 trait Note {
