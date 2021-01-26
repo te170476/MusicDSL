@@ -1,9 +1,11 @@
 package com.github.nnnnusui.musicdsl.router
 
-import akka.http.scaladsl.server.Directives
 import com.github.nnnnusui.musicdsl.usecase.{Sound => UseCase}
+import com.github.nnnnusui.musicdsl.output.{Sound => Output}
 
-trait Sound extends Directives {
+import akka.http.scaladsl.server.Directives
+
+trait Sound extends Directives with Output.JsonSupport {
   this: UseCase =>
-  val route = (rollId: Int) => get { complete(s"not impl $rollId") }
+  val route = (rollId: Int) => get { onComplete(useCase.use(rollId)) { result => complete(result) } }
 }
