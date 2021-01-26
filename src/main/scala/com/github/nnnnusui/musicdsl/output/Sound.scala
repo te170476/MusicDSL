@@ -5,8 +5,8 @@ import spray.json.DefaultJsonProtocol
 
 sealed trait Sound
 object Sound {
-  case class Get(pcm: Seq[Double])
+  case class Get(channel: Int, length: Int, pcm: Seq[Double])
   trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
-    implicit val createOutput = jsonFormat1(Get)
+    implicit val createOutput = jsonFormat3(Get)
   }
 }
