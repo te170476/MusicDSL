@@ -20,7 +20,7 @@ trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
       entity(as[Input.Create]) { input =>
         onComplete(useCase.use(rollId, List(input))) { result => complete(result.map(_.head)) }
       } ~
-        entity(as[Seq[Input.Create]]) { inputs =>
+        entity(as[List[Input.Create]]) { inputs =>
           onComplete(useCase.use(rollId, inputs)) { result => complete(result) }
         }
 
