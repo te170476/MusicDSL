@@ -79,13 +79,11 @@ trait Sound {
         val beat = length / division
         val maxPitch = 12
 
-        println(s"$rollId: $folded")
         folded
           .map(note => {
             val offset = offsetSum + note.pos.offset * beat
             val length = note.length * beat
             val hertz = getHertz(note.pos.octave * maxPitch + note.pos.pitch)
-            println(s"\t$division _ $offset, $length")
             note.childPianoRoll match {
               case Some(value) => getPcm(sampleRate, length, value, division, offset)
               case None        => generate(sampleRate, hertz, offset, length)
