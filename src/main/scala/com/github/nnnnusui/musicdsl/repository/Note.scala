@@ -14,7 +14,7 @@ trait Note {
     import profile.api._
 
     class TableInfo(tag: Tag) extends Table[Entity](tag, tableName) {
-      def pk = primaryKey(s"pk_$tableName", (offset, octave, pitch))
+      def pk = primaryKey(s"pk_$tableName", (rollId, offset, octave, pitch))
       def rollId = column[Int]("roll_id")
       def offset = column[Int]("offset")
       def octave = column[Int]("octave")
