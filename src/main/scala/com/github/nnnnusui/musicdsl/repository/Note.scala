@@ -49,9 +49,12 @@ trait Note {
       db.run {
         find(rollId, offset, octave, pitch).result.headOption
       }
-    def getAll: Future[List[Entity]] =
+    def getAll(rollId: Int): Future[List[Entity]] =
       db.run {
-        tableQuery.to[List].result
+        tableQuery
+          .filter(_.rollId === rollId)
+          .to[List]
+          .result
       }
     def delete(rollId: Int, offset: Int, octave: Int, pitch: Int): Future[Int] =
       db.run {

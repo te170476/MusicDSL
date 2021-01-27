@@ -24,7 +24,7 @@ trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
           onComplete(useCase.use(rollId, inputs)) { result => complete(result) }
         }
 
-    def getAll = onComplete(useCase.use(Input.GetAll())) { result => complete(result) }
+    def getAll = onComplete(useCase.use(rollId)) { result => complete(result) }
     def delete =
       parameters("offset".as[Int], "octave".as[Int], "pitch".as[Int]) { (offset, octave, pitch) =>
         onComplete(useCase.use(Input.Delete(rollId, offset, octave, pitch))) { result => complete(result) }

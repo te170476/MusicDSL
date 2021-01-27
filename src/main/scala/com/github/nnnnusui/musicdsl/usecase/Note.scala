@@ -24,8 +24,9 @@ trait Note {
         .creates(entities)
         .map(_ => entities.map(_.toOutputCreate))
     }
-    def use(input: Input.GetAll): Future[Output.GetAll] =
-      repository.getAll
+    def use(rollId: Int): Future[Output.GetAll] =
+      repository
+        .getAll(rollId)
         .map(_.map(_.toOutputCreate))
         .map(it => Output.GetAll(it))
     def use(input: Input.Delete): Future[Output.Delete] =
