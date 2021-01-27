@@ -25,7 +25,7 @@ class NoteTest extends AnyWordSpec with Matchers with ScalatestRouteTest with In
       }
     }
     "be able to add entity (POST)" in {
-      val create = Input.Create(1, 2, 3)
+      val create = Input.Create(1, 2, 3, None, None)
       val entity = Marshal(create).to[MessageEntity].futureValue
       val request = Post().withEntity(entity)
 
