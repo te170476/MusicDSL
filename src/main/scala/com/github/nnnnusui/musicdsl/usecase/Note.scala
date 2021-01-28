@@ -12,18 +12,18 @@ trait Note {
   val useCase: UseCase
 
   implicit class InputCreateToEntity(it: Input.Create) {
-    def toEntity(rollId: Int) =
-      Entity(rollId, it.offset, it.octave, it.pitch, it.sticky.getOrElse(false), it.childRollId)
+    def toBecomeEntity(rollId: Int) =
+      Entity(rollId, _, it.offset, it.octave, it.pitch, it.length, it.childRollId)
   }
   implicit class EntityToOutput(it: Entity) {
-    def toOutputCreate = Output.Create(it.offset, it.octave, it.pitch, it.sticky, it.childRollId)
+    def toOutputCreate = Output.Create(it.id, it.offset, it.octave, it.pitch, it.length, it.childRollId)
   }
   class UseCase(implicit val dispatcher: ExecutionContextExecutor) {
-    def use(rollId: Int, inputs: Seq[Input.Create]): Future[Seq[Output.Create]] = {
-      val entities = inputs.map(_.toEntity(rollId))
+    def use(rollId: Int, input: Input.Create): Future[Output.Create] = {
+      val becomeEntity = input.toBecomeEntity(rollId)
       repository
-        .creates(entities)
-        .map(_ => entities.map(_.toOutputCreate))
+        .create(rollId, becomeEntity)
+        .map(id => becomeEntity(id).toOutputCreate)
     }
     def use(rollId: Int): Future[Output.GetAll] =
       repository
@@ -32,7 +32,7 @@ trait Note {
         .map(it => Output.GetAll(it))
     def use(input: Input.Delete): Future[Output.Delete] =
       repository
-        .delete(input.rollId, input.offset, input.octave, input.pitch)
+        .delete(input.rollId, input.id)
         .map(it => Output.Delete(it))
   }
 }

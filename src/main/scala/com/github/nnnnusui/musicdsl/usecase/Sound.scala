@@ -25,7 +25,6 @@ trait Sound {
     object RollNoteMap {
       def getFuture(rollId: Int): Future[RollNoteMap] =
         getRollIdMap(rollId)
-          .map(_.map { case (id, (roll, notes)) => id -> (roll, getFolded(notes)) })
           .map(it => new RollNoteMap(rollId, it))
       def getRollIdMap(rollId: Int): Future[Map[Int, (Roll, Seq[Note])]] =
         getRoll(rollId).flatMap {
@@ -43,34 +42,8 @@ trait Sound {
                   .map(_.foldLeft(Map(rollId -> (roll, notes))) { case (sum, it) => sum ++ it })
               }
         }
-
-      case class Pos(offset: Int, octave: Int, pitch: Int)
-      case class Data(pos: Pos, length: Int, childPianoRoll: Option[Int])
-      case class Fold(store: Seq[Data], current: Data, beforeSticky: Boolean)
-      def getFolded(notes: Seq[Note]): Seq[Data] = {
-        val folded =
-          notes
-            .sortBy(_.offset)
-            .sortBy(_.pitch)
-            .sortBy(_.octave)
-            .foldLeft(Fold(Seq(), Data(Pos(-1, -1, -1), 0, None), false))((fold, note) => {
-              val current = fold.current
-              val samePitch =
-                current.pos.octave == note.octave &&
-                  current.pos.pitch == note.pitch
-              if (samePitch && fold.beforeSticky) {
-                val length = current.length + 1
-                Fold(fold.store, current.copy(length = length), note.sticky)
-              } else {
-                val store = fold.store :+ current
-                val pos = Pos(note.offset, note.octave, note.pitch)
-                Fold(store, Data(pos, 1, note.childRollId), note.sticky)
-              }
-            })
-        (folded.store :+ folded.current).tail
-      }
     }
-    class RollNoteMap private (val rootId: Int, val map: Map[Int, (Roll, Seq[RollNoteMap.Data])] = Map.empty) {
+    class RollNoteMap private (val rootId: Int, val map: Map[Int, (Roll, Seq[Note])] = Map.empty) {
       def getPcm(sampleRate: Int, division: Int): Seq[Double] =
         getPcm(sampleRate, sampleRate * division, rootId, 0, 0)
       private def getPcm(sampleRate: Int, length: Int, rollId: Int, divisionSum: Int, offsetSum: Int): Seq[Double] = {
@@ -81,10 +54,10 @@ trait Sound {
 
         folded
           .map(note => {
-            val offset = offsetSum + note.pos.offset * beat
+            val offset = offsetSum + note.offset * beat
             val length = note.length * beat
-            val hertz = getHertz(note.pos.octave * maxPitch + note.pos.pitch)
-            note.childPianoRoll match {
+            val hertz = getHertz(note.octave * maxPitch + note.pitch)
+            note.childRollId match {
               case Some(value) => getPcm(sampleRate, length, value, division, offset)
               case None        => generate(sampleRate, hertz, offset, length)
             }

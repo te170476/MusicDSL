@@ -11,23 +11,23 @@ trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
     val action = new Action(rollId)
     pathEndOrSingleSlash {
       get { action.getAll } ~
-        post { action.create } ~
-        delete { action.delete }
-    }
+        post { action.create }
+    } ~
+      pathPrefix(IntNumber) { id =>
+        pathEndOrSingleSlash {
+          delete { action.delete(id) }
+        }
+      }
   }
   class Action(rollId: Int) {
     def create =
       entity(as[Input.Create]) { input =>
-        onComplete(useCase.use(rollId, List(input))) { result => complete(result.map(_.head)) }
-      } ~
-        entity(as[List[Input.Create]]) { inputs =>
-          onComplete(useCase.use(rollId, inputs)) { result => complete(result) }
-        }
-
-    def getAll = onComplete(useCase.use(rollId)) { result => complete(result) }
-    def delete =
-      parameters("offset".as[Int], "octave".as[Int], "pitch".as[Int]) { (offset, octave, pitch) =>
-        onComplete(useCase.use(Input.Delete(rollId, offset, octave, pitch))) { result => complete(result) }
+        onComplete(useCase.use(rollId, input)) { result => complete(result) }
       }
+
+    def getAll =
+      onComplete(useCase.use(rollId)) { result => complete(result) }
+    def delete(id: Int) =
+      onComplete(useCase.use(Input.Delete(rollId, id))) { result => complete(result) }
   }
 }
