@@ -46,7 +46,7 @@ trait Sound {
     class RollNoteMap private (val rootId: Int, val map: Map[Int, (Roll, Seq[Note])] = Map.empty) {
       def getPcm(sampleRate: Int, division: Int): Seq[Double] =
         getPcm(sampleRate, sampleRate * division, rootId, 0, 0)
-      private def getPcm(sampleRate: Int, length: Int, rollId: Int, divisionSum: Int, offsetSum: Int): Seq[Double] = {
+      private def getPcm(sampleRate: Int, length: Int, rollId: Int, offsetSum: Int, relativeTone: Int): Seq[Double] = {
         val (roll, folded) = map(rollId)
         val division = roll.division
         val beat = length / division
@@ -56,9 +56,10 @@ trait Sound {
           .map(note => {
             val offset = offsetSum + note.offset * beat
             val length = note.length * beat
-            val hertz = getHertz(note.octave * maxPitch + note.pitch)
+            val tone = relativeTone + (note.octave * maxPitch + note.pitch)
+            val hertz = getHertz(tone)
             note.childRollId match {
-              case Some(value) => getPcm(sampleRate, length, value, division, offset)
+              case Some(value) => getPcm(sampleRate, length, value, offset, tone)
               case None        => generate(sampleRate, hertz, offset, length)
             }
           })
@@ -83,7 +84,7 @@ trait Sound {
         val count = 2 * index * hertz / sampleRate
         if (count % 2 == 0) 1.0 else -1.0
       }
-      def sin(sampleRate: Int, index: Int, hertz: Double) =
+      def sin(sampleRate: Int, index: Int, hertz: Double): Double =
         Math.sin((2 * Math.PI * index * hertz) / sampleRate)
       def generate(sampleRate: Int, hertz: Double, offset: Int, length: Int): Seq[Double] = {
         Range(0, offset + length)
