@@ -16,8 +16,6 @@ trait Note {
       Entity(rollId, _, it.offset, it.octave, it.pitch, it.length, it.childRollId)
   }
   implicit class InputCreateToOptional(it: Input.Update) {
-//    def toOptional =
-//      Repository.Optional.tupled(Input.Update.unapply(it).get)
     def toEntity(rollId: Int) =
       Entity(rollId, it.id, it.offset, it.octave, it.pitch, it.length, it.childRollId)
   }

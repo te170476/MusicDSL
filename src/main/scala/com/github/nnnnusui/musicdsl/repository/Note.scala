@@ -1,20 +1,9 @@
 package com.github.nnnnusui.musicdsl.repository
 
 import com.github.nnnnusui.musicdsl.entity.score.{Note => Entity}
-import slick.dbio.DBIOAction
 
 import scala.concurrent.Future
 
-object Note {
-  case class Optional(
-      id: Int,
-      offset: Option[Int],
-      octave: Option[Int],
-      pitch: Option[Int],
-      length: Option[Int],
-      childRollId: Option[Option[Int]]
-  )
-}
 trait Note {
   val repository: Repository
 
@@ -47,26 +36,12 @@ trait Note {
     def create(rollId: Int, becomeEntity: Int => Entity): Future[Int] =
       db.run {
         tableAutoInc += becomeEntity(-1)
-//          .filter(_.rollId === rollId) idをrollId毎にAutoIncしたいけど無理っぽい
       }
 
     def update(rollId: Int, entity: Entity): Future[Int] =
       db.run {
         find(rollId, entity.id).update(entity)
       }
-//    def update(rollId: Int, optional: Note.Optional): Future[Option[Entity]] =
-//      db.run {
-//        val row = find(rollId, optional.id)
-//        println(s"debugPrintLn: $optional")
-//        Seq(
-//          optional.offset.map(value => row.map(_.offset).update(value)),
-//          optional.octave.map(value => row.map(_.octave).update(value)),
-//          optional.pitch.map(value => row.map(_.pitch).update(value)),
-//          optional.length.map(value => row.map(_.length).update(value)),
-//          optional.childRollId.map(value => row.map(_.childRollId).update(value))
-//        ).filter(_.isDefined).map(_.get)
-//        row.result.headOption
-//      }
     def getByKeys(rollId: Int, id: Int): Future[Option[Entity]] =
       db.run {
         find(rollId, id).result.headOption
