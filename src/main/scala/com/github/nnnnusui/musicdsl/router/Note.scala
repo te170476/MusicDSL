@@ -15,7 +15,8 @@ trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
     } ~
       pathPrefix(IntNumber) { id =>
         pathEndOrSingleSlash {
-          delete { action.delete(id) }
+          post { action.update(id) } ~
+            delete { action.delete(id) }
         }
       }
   }
@@ -24,10 +25,13 @@ trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
       entity(as[Input.Create]) { input =>
         onComplete(useCase.use(rollId, input)) { result => complete(result) }
       }
-
     def getAll =
       onComplete(useCase.use(rollId)) { result => complete(result) }
+    def update(id: Int) =
+      entity(as[Input.Update]) { input =>
+        onComplete(useCase.use(rollId, input)) { result => complete(result) }
+      }
     def delete(id: Int) =
-      onComplete(useCase.use(Input.Delete(rollId, id))) { result => complete(result) }
+      onComplete(useCase.use(rollId, Input.Delete(id))) { result => complete(result) }
   }
 }

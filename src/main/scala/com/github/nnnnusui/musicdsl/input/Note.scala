@@ -7,9 +7,18 @@ sealed trait Note
 object Note {
   case class Create(offset: Int, octave: Int, pitch: Int, length: Int, childRollId: Option[Int]) extends Note
   case class GetAll() extends Note
-  case class Delete(rollId: Int, id: Int) extends Note
+  case class Update(id: Int, offset: Int, octave: Int, pitch: Int, length: Int, childRollId: Option[Int])
+//  case class Update(
+//      id: Int,
+//      offset: Option[Int],
+//      octave: Option[Int],
+//      pitch: Option[Int],
+//      length: Option[Int],
+//      childRollId: Option[Option[Int]]
+//  ) extends Note
+  case class Delete(id: Int) extends Note
   trait JsonSupport extends SprayJsonSupport with FlexibleDefaultJsonProtocol {
     implicit val createInput = jsonFormat5(Create)
-    implicit val deleteInput = jsonFormat2(Delete)
+    implicit val updateInput = jsonFormat6(Update)
   }
 }
