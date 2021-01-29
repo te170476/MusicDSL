@@ -17,6 +17,7 @@ trait Roll {
   implicit class EntityToOutput(it: Entity) {
     def toOutputCreate = Output.Create(it.id, it.division)
     def toOutputGetById = Output.GetById(it.id, it.division)
+    def toOutputUpdate = Output.Update(it.id, it.division)
   }
   class UseCase(implicit val dispatcher: ExecutionContextExecutor) {
     def use(input: Input.Create): Future[Output.Create] = {
@@ -29,9 +30,15 @@ trait Roll {
       repository.getAll
         .map(_.map(_.toOutputCreate))
         .map(it => Output.GetAll(it))
-    def use(input: Input.GetById): Future[Option[Output.GetById]] =
+    def use(id: Int, input: Input.GetById): Future[Option[Output.GetById]] =
       repository
-        .getById(input.id)
+        .getById(id)
         .map(_.map(_.toOutputGetById))
+    def use(id: Int, input: Input.Update): Future[Output.Update] = {
+      val entity = Entity(id, input.division)
+      repository
+        .update(entity)
+        .map(_ => entity.toOutputUpdate)
+    }
   }
 }

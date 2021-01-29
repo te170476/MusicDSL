@@ -16,7 +16,8 @@ trait Roll extends Directives with Input.JsonSupport with Output.JsonSupport {
     } ~
       pathPrefix(IntNumber) { id =>
         pathEndOrSingleSlash {
-          get { Action.getById(id) }
+          get { Action.getById(id) } ~
+            post { Action.update(id) }
         } ~
           pathPrefix("notes") { noteRouter(id) } ~
           pathPrefix("sound") { soundRouter(id) }
@@ -27,6 +28,10 @@ trait Roll extends Directives with Input.JsonSupport with Output.JsonSupport {
         onComplete(useCase.use(input)) { result => complete(result) }
       }
     def getAll = onComplete(useCase.use(Input.GetAll())) { result => complete(result) }
-    def getById(id: Int) = onComplete(useCase.use(Input.GetById(id))) { result => complete(result) }
+    def getById(id: Int) = onComplete(useCase.use(id, Input.GetById())) { result => complete(result) }
+    def update(id: Int) =
+      entity(as[Input.Update]) { input =>
+        onComplete(useCase.use(id, input)) { result => complete(result) }
+      }
   }
 }
