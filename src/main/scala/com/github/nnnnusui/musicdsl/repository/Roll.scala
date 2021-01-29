@@ -23,7 +23,7 @@ trait Roll {
 
     def create(becomeEntity: Int => Entity): Future[Int] =
       db.run {
-        tableQuery += becomeEntity(-1)
+        tableAutoInc += becomeEntity(-1)
       }
     def update(entity: Entity): Future[Int] =
       db.run {
