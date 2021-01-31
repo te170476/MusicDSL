@@ -46,7 +46,13 @@ trait Note {
       db.run {
         find(rollId, id).result.headOption
       }
-    def getAll(rollId: Int): Future[List[Entity]] =
+    def getAll(): Future[List[Entity]] =
+      db.run {
+        tableQuery
+          .to[List]
+          .result
+      }
+    def getFromRollId(rollId: Int): Future[List[Entity]] =
       db.run {
         tableQuery
           .filter(_.rollId === rollId)

@@ -20,21 +20,27 @@ trait Note {
       Entity(rollId, it.id, it.offset, it.octave, it.pitch, it.length, it.childRollId)
   }
   implicit class EntityToOutput(it: Entity) {
+    def toOutputValue = Output.Value(it.rollId, it.id, it.offset, it.octave, it.pitch, it.length, it.childRollId)
     def toOutputCreate = Output.Create(it.id, it.offset, it.octave, it.pitch, it.length, it.childRollId)
     def toOutputUpdate = Output.Update(it.id, it.offset, it.octave, it.pitch, it.length, it.childRollId)
   }
   class UseCase(implicit val dispatcher: ExecutionContextExecutor) {
+    def use(): Future[Output.GetAll] =
+      repository
+        .getAll()
+        .map(_.map(_.toOutputValue))
+        .map(it => Output.GetAll(it))
     def use(rollId: Int, input: Input.Create): Future[Output.Create] = {
       val becomeEntity = input.toBecomeEntity(rollId)
       repository
         .create(rollId, becomeEntity)
         .map(id => becomeEntity(id).toOutputCreate)
     }
-    def use(rollId: Int): Future[Output.GetAll] =
+    def use(rollId: Int): Future[Output.GetFromRollId] =
       repository
-        .getAll(rollId)
+        .getFromRollId(rollId)
         .map(_.map(_.toOutputCreate))
-        .map(it => Output.GetAll(it))
+        .map(it => Output.GetFromRollId(it))
 
     def use(rollId: Int, input: Input.Update): Future[Output.Update] = {
       val entity = input.toEntity(rollId)

@@ -7,6 +7,10 @@ import akka.http.scaladsl.server.{Directives, Route}
 
 trait Note extends Directives with Input.JsonSupport with Output.JsonSupport {
   this: UseCase =>
+  val routeFromRoot =
+    get {
+      onComplete(useCase.use()) { result => complete(result) }
+    }
   val route: Int => Route = (rollId: Int) => {
     val action = new Action(rollId)
     pathEndOrSingleSlash {

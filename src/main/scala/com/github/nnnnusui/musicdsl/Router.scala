@@ -42,7 +42,8 @@ class Router(implicit val dispatcher: ExecutionContextExecutor, implicit val rep
         pathEndOrSingleSlash {
           get { complete("available") }
         } ~
-          pathPrefix("rolls") { Roll.route }
+          pathPrefix("rolls") { Roll.route } ~
+          pathPrefix("notes") { Note.routeFromRoot }
       }
   val route =
     pathSingleSlash {
