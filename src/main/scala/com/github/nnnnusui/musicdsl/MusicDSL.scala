@@ -14,7 +14,7 @@ object MusicDSL extends App {
   val router = new Router
 
   val bindingFuture =
-    Http().newServerAt("localhost", 8080).bindFlow(router.route)
+    Http().newServerAt("0.0.0.0", 8080).bindFlow(router.route)
   system.registerOnTermination(() => router.repositoryImpl.session.close())
 
   println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
