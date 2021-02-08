@@ -10,8 +10,8 @@ trait Sound extends Directives with Output.JsonSupport {
   this: UseCase =>
   val route = (rollId: Int) =>
     get {
-      parameters("sample_rate".as[Int]) { sampleRate =>
-        onComplete(useCase.use(rollId, Input.Get(sampleRate))) { result => complete(result) }
+      parameters("sample_rate".as[Int], "tempo".as[Double], "beat".as[Int]) { (sampleRate, tempo, beat) =>
+        onComplete(useCase.use(rollId, Input.Get(sampleRate, tempo, beat))) { result => complete(result) }
       }
     }
 }

@@ -14,11 +14,21 @@ trait Sound {
   class UseCase(implicit val dispatcher: ExecutionContextExecutor) {
 
     def use(rollId: Int, input: Input.Get): Future[Output.Get] = {
+      val sampleRate = input.sampleRate
       val channel = 1
-      for (map <- RollNoteMap.getFuture(rollId)) yield {
-        val length = input.sampleRate * 4
-        val pcm = map.getPcm(input.sampleRate, 4)
-        Output.Get(channel, Seq(length, pcm.length).max, pcm)
+      val tempoBase = 60
+      val tempo = input.tempo
+      for {
+        maybeRoll <- getRoll(rollId)
+        map <- RollNoteMap.getFuture(rollId)
+      } yield maybeRoll match {
+        case None => return Future.failed(new Exception(s"rollId: $rollId _ not found"))
+        case Some(roll) => {
+          val beatCount = input.beat * roll.division
+          val length = (sampleRate * beatCount * tempoBase / tempo).toInt
+          val pcm = map.getPcm(input.sampleRate, length)
+          Output.Get(channel, Seq(length, pcm.length).max, pcm)
+        }
       }
     }
 
@@ -44,8 +54,8 @@ trait Sound {
         }
     }
     class RollNoteMap private (val rootId: Int, val map: Map[Int, (Roll, Seq[Note])] = Map.empty) {
-      def getPcm(sampleRate: Int, division: Int): Seq[Double] =
-        getPcm(sampleRate, sampleRate * division, rootId, 0, 0)
+      def getPcm(sampleRate: Int, length: Int): Seq[Double] =
+        getPcm(sampleRate, length, rootId, 0, 0)
       private def getPcm(
           sampleRate: Int,
           maxLength: Int,
@@ -58,6 +68,7 @@ trait Sound {
         val beat = maxLength / division
         val maxPitch = 12
 
+        println(folded)
         folded
           .map(note => {
             val offset = offsetSum + note.offset * beat
