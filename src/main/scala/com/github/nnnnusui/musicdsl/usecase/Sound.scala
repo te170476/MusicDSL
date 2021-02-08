@@ -89,7 +89,7 @@ trait Sound {
         hertzReference * Math.pow(2, (tone - keyA) / 12.0)
       }
       def square(sampleRate: Int, index: Int, hertz: Double): Double = {
-        val count = 2 * index * hertz / sampleRate
+        val count = (2 * index * hertz / sampleRate).toInt
         if (count % 2 == 0) 1.0 else -1.0
       }
       def sin(sampleRate: Int, index: Int, hertz: Double): Double =
