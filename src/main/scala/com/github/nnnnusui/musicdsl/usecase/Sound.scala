@@ -64,12 +64,10 @@ trait Sound {
             val length = note.length * beat
             val tone = relativeTone + (note.octave * maxPitch + note.pitch)
             val hertz = getHertz(tone)
-            if (offset >= maxLength) Seq.empty
-            else
-              note.childRollId match {
-                case Some(value) => getPcm(sampleRate, length, value, offset, tone)
-                case None        => generate(sampleRate, hertz, offset, length)
-              }
+            note.childRollId match {
+              case Some(value) => getPcm(sampleRate, length, value, offset, tone)
+              case None        => generate(sampleRate, hertz, offset, length)
+            }
           })
           .fold(Seq.empty[Double])((sumPcm, pcm) =>
             sumPcm
