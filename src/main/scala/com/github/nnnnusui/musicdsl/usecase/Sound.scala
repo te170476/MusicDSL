@@ -74,12 +74,7 @@ trait Sound {
           .fold(Seq.empty[Double])((sumPcm, pcm) =>
             sumPcm
               .zipAll(pcm, 0.0, 0.0)
-              .map {
-                case (sum, it) =>
-                  if (sum == 0.0) it
-                  else if (it == 0.0) sum
-                  else sum * 0.5 + it * 0.5
-              }
+              .map { case (sum, it) => sum + it }
           )
       }
 
@@ -98,7 +93,7 @@ trait Sound {
         Range(0, offset + length)
           .map(index => {
             if (index <= offset) 0.0
-            else sin(sampleRate, index, hertz)
+            else square(sampleRate, index - offset, hertz) * 0.05
           })
       }
     }
