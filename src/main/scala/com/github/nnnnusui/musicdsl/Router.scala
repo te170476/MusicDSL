@@ -46,8 +46,11 @@ class Router(implicit val dispatcher: ExecutionContextExecutor, implicit val rep
           pathPrefix("notes") { Note.routeFromRoot }
       }
   val route =
-    pathSingleSlash {
-      get { getFromResource("index.html") }
-    } ~
+    getFromResourceDirectory("ui") ~
+      pathEndOrSingleSlash {
+        get {
+          getFromResource("ui/index.html")
+        }
+      } ~
       cors() { pathPrefix("rest") { rest } }
 }
