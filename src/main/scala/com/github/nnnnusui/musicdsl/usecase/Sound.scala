@@ -24,7 +24,8 @@ trait Sound {
       } yield maybeRoll match {
         case None => return Future.failed(new Exception(s"rollId: $rollId _ not found"))
         case Some(roll) => {
-          val beatCount = input.beat * roll.division
+          val beatDenominator = input.beat
+          val beatCount = roll.division / beatDenominator
           val length = (sampleRate * beatCount * tempoBase / tempo).toInt
           val pcm = map.getPcm(input.sampleRate, length)
           Output.Get(channel, Seq(length, pcm.length).max, pcm)
